@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { tokenUtils, storage } from '../../utils';
 import { STORAGE_KEYS } from '../../constants';
+import { authService } from '../../services';
 import type { User, LoginForm, RegisterForm } from '../../types';
 
 /**
@@ -43,26 +44,14 @@ const initialState: AuthState = {
  * 1. createAsyncThunk：RTK提供的异步action创建器
  * 2. 自动生成pending、fulfilled、rejected三个action
  * 3. 支持错误处理和加载状态管理
+ * 4. 使用authService.login调用实际的登录API
  */
 export const loginAsync = createAsyncThunk(
   'auth/login',
   async (loginData: LoginForm, { rejectWithValue }) => {
     try {
-      // 这里后续会替换为实际的API调用
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
-      });
-
-      if (!response.ok) {
-        throw new Error('登录失败');
-      }
-
-      const data = await response.json();
-      return data;
+      const result = await authService.login(loginData);
+      return result;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '登录失败');
     }
@@ -71,28 +60,55 @@ export const loginAsync = createAsyncThunk(
 
 /**
  * 异步Action：用户注册
+ * 
+ * 原理说明：
+ * 使用authService.register调用实际的注册API
  */
 export const registerAsync = createAsyncThunk(
   'auth/register',
   async (registerData: RegisterForm, { rejectWithValue }) => {
     try {
-      // 这里后续会替换为实际的API调用
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registerData),
-      });
-
-      if (!response.ok) {
-        throw new Error('注册失败');
-      }
-
-      const data = await response.json();
-      return data;
+      const result = await authService.register(registerData);
+      return result;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '注册失败');
+    }
+  }
+);
+
+/**
+ * 异步Action：获取当前用户信息
+ * 
+ * 原理说明：
+ * 用于验证token有效性并获取最新用户信息
+ */
+export const getCurrentUserAsync = createAsyncThunk(
+  'auth/getCurrentUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await authService.getCurrentUser();
+      return user;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : '获取用户信息失败');
+    }
+  }
+);
+
+/**
+ * 异步Action：用户登出
+ * 
+ * 原理说明：
+ * 调用后端登出接口，清除服务端session
+ */
+export const logoutAsync = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await authService.logout();
+      return;
+    } catch (error) {
+      // 即使后端登出失败，也要清除本地状态
+      return rejectWithValue(error instanceof Error ? error.message : '登出失败');
     }
   }
 );
@@ -175,6 +191,50 @@ const authSlice = createSlice({
       .addCase(registerAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      });
+
+    // 获取当前用户信息异步操作处理
+    builder
+      .addCase(getCurrentUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        storage.set(STORAGE_KEYS.USER_INFO, action.payload);
+      })
+      .addCase(getCurrentUserAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        // token可能已过期，清除认证状态
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+        tokenUtils.clearAll();
+      });
+
+    // 登出异步操作处理
+    builder
+      .addCase(logoutAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logoutAsync.fulfilled, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+        state.error = null;
+        tokenUtils.clearAll();
+      })
+      .addCase(logoutAsync.rejected, (state) => {
+        // 即使登出失败，也要清除本地状态
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+        state.error = null;
+        tokenUtils.clearAll();
       });
   },
 });

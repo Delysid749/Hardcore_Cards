@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { kanbanService } from '../../services';
 import type { Kanban, KanbanDetail, KanbanForm, Card, KanbanColumn } from '../../types';
 
 /**
@@ -35,21 +36,14 @@ const initialState: KanbanState = {
  * 异步Action：获取用户的所有看板
  * 
  * 原理说明：
- * 对应原项目的 allKanban() API调用
+ * 对应原项目的 allKanban() API调用，使用kanbanService.getAllKanbans
  */
 export const fetchKanbansAsync = createAsyncThunk(
   'kanban/fetchKanbans',
   async (_, { rejectWithValue }) => {
     try {
-      // 这里后续会替换为实际的API调用
-      const response = await fetch('/api/kanban');
-      
-      if (!response.ok) {
-        throw new Error('获取看板列表失败');
-      }
-      
-      const data = await response.json();
-      return data;
+      const kanbans = await kanbanService.getAllKanbans();
+      return kanbans;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '获取看板列表失败');
     }
@@ -60,20 +54,14 @@ export const fetchKanbansAsync = createAsyncThunk(
  * 异步Action：获取看板详情
  * 
  * 原理说明：
- * 对应原项目的 kanbanContent() API调用
+ * 对应原项目的 kanbanContent() API调用，使用kanbanService.getKanbanDetail
  */
 export const fetchKanbanDetailAsync = createAsyncThunk(
   'kanban/fetchKanbanDetail',
-  async (kanbanId: number, { rejectWithValue }) => {
+  async (kanbanId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/kanban/content?kanbanId=${kanbanId}`);
-      
-      if (!response.ok) {
-        throw new Error('获取看板详情失败');
-      }
-      
-      const data = await response.json();
-      return data;
+      const kanbanDetail = await kanbanService.getKanbanDetail(kanbanId);
+      return kanbanDetail;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '获取看板详情失败');
     }
@@ -84,26 +72,14 @@ export const fetchKanbanDetailAsync = createAsyncThunk(
  * 异步Action：创建新看板
  * 
  * 原理说明：
- * 对应原项目的 addKanban() API调用
+ * 对应原项目的 addKanban() API调用，使用kanbanService.createKanban
  */
 export const createKanbanAsync = createAsyncThunk(
   'kanban/createKanban',
   async (kanbanData: KanbanForm, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/kanban', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(kanbanData),
-      });
-      
-      if (!response.ok) {
-        throw new Error('创建看板失败');
-      }
-      
-      const data = await response.json();
-      return data;
+      const kanban = await kanbanService.createKanban(kanbanData);
+      return kanban;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '创建看板失败');
     }
@@ -112,20 +88,16 @@ export const createKanbanAsync = createAsyncThunk(
 
 /**
  * 异步Action：收藏/取消收藏看板
+ * 
+ * 原理说明：
+ * 对应原项目的 collect() API调用，使用kanbanService.toggleKanbanCollect
  */
 export const toggleKanbanCollectAsync = createAsyncThunk(
   'kanban/toggleCollect',
-  async ({ kanbanId, isCollected }: { kanbanId: number; isCollected: boolean }, { rejectWithValue }) => {
+  async (kanbanId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/kanban/collect?kanbanId=${kanbanId}&isCollected=${isCollected}`, {
-        method: 'POST',
-      });
-      
-      if (!response.ok) {
-        throw new Error('操作失败');
-      }
-      
-      return { kanbanId, isCollected };
+      const result = await kanbanService.toggleKanbanCollect(kanbanId);
+      return { kanbanId, isCollected: result.isCollected };
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : '操作失败');
     }
@@ -232,8 +204,15 @@ const kanbanSlice = createSlice({
       })
       .addCase(fetchKanbanDetailAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentKanban = action.payload;
-        state.cooperating = action.payload.cooperating;
+        // 将API返回的数据转换为KanbanDetail格式
+        state.currentKanban = {
+          baseInfo: action.payload.kanban,
+          columns: action.payload.columns.map(col => ({
+            ...col,
+            cards: action.payload.cards.filter(card => card.columnId === col.id)
+          })),
+          cooperating: state.cooperating,
+        };
       })
       .addCase(fetchKanbanDetailAsync.rejected, (state, action) => {
         state.loading = false;
@@ -259,7 +238,7 @@ const kanbanSlice = createSlice({
     builder
       .addCase(toggleKanbanCollectAsync.fulfilled, (state, action) => {
         const { kanbanId, isCollected } = action.payload;
-        const kanban = state.kanbans.find(k => k.id === kanbanId);
+        const kanban = state.kanbans.find(k => k.id.toString() === kanbanId);
         if (kanban) {
           kanban.collected = isCollected;
         }
