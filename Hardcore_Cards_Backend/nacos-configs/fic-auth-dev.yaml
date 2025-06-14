@@ -1,0 +1,25 @@
+spring:
+  redis:
+    database: 0
+    port: 6379
+    host: localhost
+    password: redis123
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/HardcoreDashBoard?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: top.zway.fic.base.entity
+reCaptcha:
+  client:
+    secret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"  # 测试用密钥 
+  dev:
+    bypass: true  # 开发环境绕过reCAPTCHA验证 

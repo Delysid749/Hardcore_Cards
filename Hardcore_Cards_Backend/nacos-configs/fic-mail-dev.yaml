@@ -1,0 +1,64 @@
+spring:
+  mail:
+    nickname: 闪念看板
+    host: smtp.qq.com  # 示例使用QQ邮箱，您需要根据实际情况修改
+    username: your-email@qq.com  # 需要修改为您的邮箱
+    password: your-smtp-password  # 需要修改为您的SMTP授权码
+    default-encoding: utf-8
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+  rabbitmq:
+    username: rabbitmq
+    password: rabbitmq123
+    virtual-host: /
+    host: localhost
+    port: 5672
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        default-requeue-rejected: false
+        acknowledge-mode: auto
+        prefetch: 10
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+  redis:
+    database: 0
+    port: 6379
+    host: localhost
+    password: redis123
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/HardcoreDashBoard?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: top.zway.fic.base.entity
+mail:
+  sending:
+    # 开发环境设置为false避免实际发送邮件，仅在日志中输出
+    # 如需测试真实邮件发送，请设置为true并配置正确的SMTP信息
+    allow: false 

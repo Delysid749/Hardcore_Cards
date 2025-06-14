@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/HardcoreDashBoard?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123456
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: top.zway.fic.base.entity
+oss:
+  aws:
+    access-key-id: "test-access-key"  # 测试用，需要配置真实的S3密钥
+    access-key-secret: "test-secret-key"
+  s3:
+    default-bucket: "test-bucket"
+    endpoint: "https://s3.amazonaws.com"
+    dirname: "fic"
+  cdn: "https://your-cdn-domain.com" 
