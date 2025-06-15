@@ -1,125 +1,122 @@
-import { httpService } from './http';
-import type { User } from '../types';
+import { request } from "./request";
+import { getRsaKey } from "./rsa";
+import qs from "qs";
+import JSEncrypt from "jsencrypt";
 
 /**
- * 用户管理服务API
- * 对应原项目的用户信息管理相关接口
+ * 用户服务 - 集成RSA加密功能
+ * 
+ * 原理说明：
+ * 1. 敏感数据加密：所有涉及密码的操作都使用RSA加密
+ * 2. 数据安全：确保用户敏感信息在传输过程中的安全性
+ * 3. 统一接口：保持与原Vue项目的API接口一致性
  */
-export const userService = {
-  /**
-   * 更新用户资料
-   * 对应原项目：PUT /user/profile
-   * @param userData 用户数据
-   * @returns Promise<User>
-   */
-  updateProfile: (userData: Partial<User>) => {
-    return httpService.put<User>('/user/profile', userData);
-  },
 
-  /**
-   * 上传用户头像
-   * 对应原项目：POST /user/avatar
-   * @param file 头像文件
-   * @param onProgress 上传进度回调
-   * @returns Promise<{avatarUrl: string}>
-   */
-  uploadAvatar: (file: File, onProgress?: (progress: number) => void) => {
-    const formData = new FormData();
-    formData.append('avatar', file);
-    
-    return httpService.upload<{
-      avatarUrl: string;
-    }>('/user/avatar', formData, onProgress);
-  },
+/**
+ * RSA加密密码的通用方法
+ * 
+ * @param password 明文密码
+ * @param rsaKey RSA公钥
+ * @returns 加密后的密码
+ */
+function encryptPassword(password: string, rsaKey: string): string {
+  const encryptor = new JSEncrypt();
+  encryptor.setPublicKey("-----BEGIN PUBLIC KEY-----" + rsaKey + "-----END PUBLIC KEY-----");
+  return encryptor.encrypt(password) as string;
+}
 
-  /**
-   * 修改密码
-   * 对应原项目：PUT /user/password
-   * @param oldPassword 旧密码
-   * @param newPassword 新密码
-   * @returns Promise<void>
-   */
-  changePassword: (oldPassword: string, newPassword: string) => {
-    return httpService.put<void>('/user/password', {
-      oldPassword,
-      newPassword,
+/**
+ * 获取用户信息 - 与原项目 user.js 保持一致
+ */
+export function userInfoReq() {
+  return request({
+    url: "/api/user/info",
+    method: "get"
+  });
+}
+
+/**
+ * 更新用户昵称 - 与原项目保持一致
+ * 
+ * 对应原项目的 updateNickname 函数
+ */
+export function updateNickname(data: any) {
+  return request({
+    url: "/api/user/info/nickname",
+    method: "put",
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify(data)
+  });
+}
+
+/**
+ * 更新用户密码 - 与原项目保持一致，使用RSA加密
+ * 
+ * 流程说明：
+ * 1. 获取RSA公钥和UUID
+ * 2. 分别加密旧密码和新密码
+ * 3. 发送加密后的数据到后端
+ * 
+ * 参数说明：
+ * {
+ *   oldpw: string,  // 旧密码（明文）
+ *   newpw: string   // 新密码（明文）
+ * }
+ */
+export function updatePassword(data: any) {
+  return getRsaKey().then(response => {
+    // RSA加密新密码和旧密码
+    data.newpw = encryptPassword(data.newpw, response.data.publicKey);
+    data.oldpw = encryptPassword(data.oldpw, response.data.publicKey);
+    data.rsaUuid = response.data.uuid;
+
+    return request({
+      url: "/api/user/password",
+      method: "put",
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify(data)
     });
-  },
+  });
+}
 
-  /**
-   * 获取用户统计信息
-   * 对应原项目：GET /user/stats
-   * @returns Promise<UserStats>
-   */
-  getUserStats: () => {
-    return httpService.get<{
-      totalKanbans: number;
-      totalCards: number;
-      completedCards: number;
-      collaboratingKanbans: number;
-      recentActivity: Array<{
-        id: string;
-        type: 'create' | 'update' | 'delete' | 'collaborate';
-        description: string;
-        timestamp: string;
-      }>;
-    }>('/user/stats');
-  },
+/**
+ * 更新用户密码 - 兼容性接口，保持向后兼容
+ */
+export function updatePasswordReq(data: any) {
+  return updatePassword(data);
+}
 
-  /**
-   * 搜索用户（用于协作邀请）
-   * 对应原项目：GET /user/search
-   * @param keyword 搜索关键词
-   * @returns Promise<User[]>
-   */
-  searchUsers: (keyword: string) => {
-    return httpService.get<User[]>('/user/search', {
-      params: { keyword },
-    });
-  },
+/**
+ * 更新用户邮箱 - 与原项目保持一致
+ */
+export function updateEmail(data: any) {
+  return request({
+    url: "/api/user/email",
+    method: "put",
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify(data)
+  });
+}
 
-  /**
-   * 获取用户的协作邀请列表
-   * 对应原项目：GET /user/invitations
-   * @returns Promise<Invitation[]>
-   */
-  getInvitations: () => {
-    return httpService.get<Array<{
-      id: string;
-      kanbanId: string;
-      kanbanTitle: string;
-      inviterName: string;
-      inviterAvatar?: string;
-      role: 'viewer' | 'editor' | 'admin';
-      status: 'pending' | 'accepted' | 'rejected';
-      createdAt: string;
-    }>>('/user/invitations');
-  },
+/**
+ * 更新用户信息 - 通用接口
+ */
+export function updateUserReq(data: any) {
+  return request({
+    url: "/api/user/info",
+    method: "put",
+    data
+  });
+}
 
-  /**
-   * 响应协作邀请
-   * 对应原项目：PUT /user/invitations/:id
-   * @param invitationId 邀请ID
-   * @param action 操作类型
-   * @returns Promise<void>
-   */
-  respondToInvitation: (invitationId: string, action: 'accept' | 'reject') => {
-    return httpService.put<void>(`/user/invitations/${invitationId}`, {
-      action,
-    });
-  },
-
-  /**
-   * 删除用户账户
-   * 对应原项目：DELETE /user/account
-   * @param password 确认密码
-   * @returns Promise<void>
-   */
-  deleteAccount: (password: string) => {
-    return httpService.delete<void>('/user/account', {
-      data: { password },
-    });
-  },
-};
-
-export default userService; 
+/**
+ * 上传头像 - 与原项目保持一致
+ */
+export function uploadAvatarReq(data: any) {
+  return request({
+    url: "/api/user/avatar",
+    method: "post",
+    data,
+    headers: { 'content-type': 'multipart/form-data' }
+  });
+} 

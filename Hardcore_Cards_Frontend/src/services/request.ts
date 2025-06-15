@@ -1,262 +1,150 @@
 import axios from 'axios';
 import type { AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { message } from 'antd';
-import { STORAGE_KEYS } from '../constants';
-import { tokenUtils } from '../utils/tokenUtils';
+import qs from 'qs';
 
 /**
- * API响应数据结构
- * 对应后端统一响应格式 R<T>
+ * API响应数据结构 - 与原项目保持一致
  */
 export interface ApiResponse<T = any> {
   code: string;
   msg: string;
   data: T;
-  total?: number;
 }
 
 /**
- * 请求配置扩展
+ * 创建axios实例 - 与原Vue项目配置保持一致
  */
-interface RequestConfig extends InternalAxiosRequestConfig {
-  skipAuth?: boolean;      // 跳过Token验证
-  skipErrorHandler?: boolean; // 跳过统一错误处理
-}
-
-/**
- * 创建axios实例
- * 
- * 设计原理：
- * 1. 统一baseURL：所有请求都通过代理转发
- * 2. 超时设置：避免请求长时间挂起
- * 3. 拦截器：统一处理Token和错误
- */
-const request = axios.create({
-  baseURL: '/api',
-  timeout: 15000,
-  headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-  },
+const instance = axios.create({
+  baseURL: '',
+  timeout: 15000
 });
 
 /**
- * 请求拦截器
- * 
- * 功能：
- * 1. 自动添加Authorization头
- * 2. 请求日志记录
- * 3. 请求参数处理
+ * 请求拦截器 - 完全按照原项目逻辑
  */
-request.interceptors.request.use(
-  (config: RequestConfig) => {
-    // 打印请求日志（仅开发环境）
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`🚀 [${config.method?.toUpperCase()}] ${config.url}`, {
-        params: config.params,
-        data: config.data,
-      });
+instance.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    // 如果认证就统一设置 - 与原项目逻辑一致
+    const token = window.localStorage.getItem('access_token');
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token;
     }
-
-    // 自动添加Token（除非明确跳过）
-    if (!config.skipAuth) {
-      const authHeader = tokenUtils.formatAuthorizationHeader();
-      if (authHeader) {
-        config.headers.Authorization = authHeader;
-      }
-    }
-
     return config;
   },
   (error: AxiosError) => {
-    console.error('❌ Request Error:', error);
     return Promise.reject(error);
   }
 );
 
 /**
- * 响应拦截器
- * 
- * 功能：
- * 1. 统一处理响应格式
- * 2. Token过期自动刷新
- * 3. 错误统一处理
+ * 响应拦截器 - 完全按照原项目逻辑
  */
-request.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
-    const { data } = response;
-
-    // 打印响应日志（仅开发环境）
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`✅ [${response.config.method?.toUpperCase()}] ${response.config.url}`, data);
-    }
-
-    // 检查业务状态码
-    if (data.code === '000') {
-      // 成功响应 - 返回原response，保持axios响应格式
-      return response;
-    } else {
-      // 业务错误
-      const error = new Error(data.msg || '请求失败') as any;
-      error.code = data.code;
-      error.response = response;
-      return Promise.reject(error);
-    }
-  },
-  async (error: AxiosError<ApiResponse>) => {
-    const { response, config } = error;
-
-    // 打印错误日志
-    console.error('❌ Response Error:', {
-      status: response?.status,
-      data: response?.data,
-      url: config?.url,
-    });
-
-    // 处理HTTP状态码错误
-    if (response) {
-      switch (response.status) {
-        case 401: {
-          // Token过期，尝试刷新
-          const refreshToken = tokenUtils.getRefreshToken();
-          if (refreshToken && !config?.url?.includes('/oauth/token')) {
-            try {
-              await refreshTokenRequest();
-              // 重新发送原请求
-              return request(config!);
-            } catch (refreshError) {
-              // 刷新失败，跳转登录
-              handleAuthError();
-              return Promise.reject(refreshError);
-            }
-          } else {
-            handleAuthError();
-          }
-          break;
-        }
-        case 403:
-          message.error('权限不足，请联系管理员');
-          break;
-        case 404:
-          message.error('请求的资源不存在');
-          break;
-        case 500:
-          message.error('服务器内部错误，请稍后重试');
-          break;
-        default:
-          message.error(response.data?.msg || `请求失败 (${response.status})`);
+instance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    console.log(response.data ? response.data : response);
+    if (!response.data || response.data.code !== "000") {
+      console.log(response);
+      if (response.data && response.data.code === "A401") {
+        tokenFail();
+        return Promise.reject(response.data);
       }
-    } else if (error.code === 'ECONNABORTED') {
-      // 超时错误
-      message.error('请求超时，请检查网络连接');
-    } else {
-      // 网络错误
-      message.error('网络连接失败，请检查网络');
+      message.error(response.data ? response.data.msg : '请求失败');
+      return Promise.reject(response.data ? response.data : response);
     }
-
+    return response.data ? response.data : response;
+  },
+  (error: AxiosError<ApiResponse>) => {
+    console.error('请求错误:', error);
+    
+    // 检查是否有响应对象 - 与原项目错误处理逻辑一致
+    if (error.response) {
+      // 服务器返回了错误状态码
+      if (error.response.status === 401) {
+        tokenFail();
+        return Promise.reject(error);
+      }
+      
+      // 获取错误信息
+      let errorMessage = '请求失败';
+      if (error.response.data) {
+        if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        } else if (error.response.data.msg) {
+          errorMessage = error.response.data.msg;
+        } else if ((error.response.data as any).message) {
+          errorMessage = (error.response.data as any).message;
+        } else {
+          errorMessage = `请求失败 (${error.response.status})`;
+        }
+      } else {
+        errorMessage = `请求失败 (${error.response.status})`;
+      }
+      
+      message.error(errorMessage);
+    } else if (error.request) {
+      // 请求已发送但没有收到响应
+      if (error.code === 'ECONNABORTED') {
+        // 超时错误
+        message.error('请求超时，服务器响应较慢，请稍后重试');
+      } else {
+        message.error('网络连接失败，请检查后端服务是否启动');
+      }
+    } else {
+      // 其他错误
+      message.error(error.message || '请求配置错误');
+    }
+    
     return Promise.reject(error);
   }
 );
 
 /**
- * 刷新Token
+ * Token失效处理 - 完全按照原项目逻辑
  */
-async function refreshTokenRequest(): Promise<void> {
-  const refreshToken = tokenUtils.getRefreshToken();
-  if (!refreshToken) {
-    throw new Error('No refresh token');
-  }
-
-  try {
-    const response = await axios.post('/api/oauth/token', {
-      grant_type: 'refresh_token',
-      refresh_token: refreshToken,
-    }, {
-      skipAuth: true, // 刷新请求不需要Authorization头
-    } as RequestConfig);
-
-    const tokenInfo = response.data.data;
+export function tokenFail() {
+  const rftoken = localStorage.getItem("refresh_token");
+  if (rftoken) {
+    const data = {
+      grant_type: "refresh_token",
+      client_id: "fic",
+      client_secret: "fic",
+      refresh_token: rftoken
+    };
     
-    // 更新Token信息
-    if (tokenInfo.access_token && tokenInfo.refresh_token) {
-      tokenUtils.setTokenInfo(tokenInfo);
-    } else {
-      // 兼容旧格式
-      tokenUtils.setAccessToken(tokenInfo.access_token);
-      tokenUtils.setRefreshToken(tokenInfo.refresh_token);
-    }
-
-  } catch (error) {
-    // 刷新失败，清除所有Token
-    tokenUtils.clearAll();
-    throw error;
+    axios.post("/api/oauth/token", qs.stringify(data), {
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      timeout: 15000
+    })
+    .then(response => {
+      console.log(response);
+      if (response.data.code === "000") {
+        localStorage.setItem("access_token", response.data.data.access_token);
+        localStorage.setItem("refresh_token", response.data.data.refresh_token);
+        // 在React中需要重新加载页面或更新路由
+        window.location.href = "/home";
+      } else {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/";
+      }
+    })
+    .catch(() => {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/";
+    });
+  } else {
+    // 如果没有 refresh_token，直接跳转到登录页
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    window.location.href = "/";
   }
 }
 
 /**
- * 处理认证错误
+ * 通用请求函数 - 与原项目保持一致
  */
-function handleAuthError(): void {
-  // 清除本地存储
-  tokenUtils.clearAll();
-  localStorage.removeItem(STORAGE_KEYS.USER_INFO);
-  
-  // 提示用户
-  message.error('登录已过期，请重新登录');
-  
-  // 跳转登录页面
-  window.location.href = '/login';
-}
-
-/**
- * 通用请求方法封装
- */
-export const requestApi = {
-  /**
-   * GET请求
-   */
-  get: <T = any>(url: string, params?: any, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.get(url, { params, ...config }).then(res => res.data);
-  },
-
-  /**
-   * POST请求
-   */
-  post: <T = any>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.post(url, data, config).then(res => res.data);
-  },
-
-  /**
-   * PUT请求
-   */
-  put: <T = any>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.put(url, data, config).then(res => res.data);
-  },
-
-  /**
-   * DELETE请求
-   */
-  delete: <T = any>(url: string, params?: any, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.delete(url, { params, ...config }).then(res => res.data);
-  },
-
-  /**
-   * PATCH请求
-   */
-  patch: <T = any>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.patch(url, data, config).then(res => res.data);
-  },
-
-  /**
-   * 文件上传
-   */
-  upload: <T = any>(url: string, formData: FormData, config?: RequestConfig): Promise<ApiResponse<T>> => {
-    return request.post(url, formData, {
-      ...config,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(res => res.data);
-  },
-};
-
-export default request; 
+export function request(config: any) {
+  return instance(config);
+} 

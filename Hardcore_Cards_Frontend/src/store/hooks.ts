@@ -34,7 +34,7 @@ export const useIsAuthenticated = () => useAppSelector((state) => state.auth.isA
 export const useKanbans = () => useAppSelector((state) => state.kanban.kanbans);
 export const useCurrentKanban = () => useAppSelector((state) => state.kanban.currentKanban);
 export const useKanbanLoading = () => useAppSelector((state) => state.kanban.loading);
-export const useCooperating = () => useAppSelector((state) => state.kanban.cooperating);
+export const useCooperating = () => useAppSelector((state) => state.kanban.loading);
 
 // UI相关selectors
 export const useGlobalLoading = () => useAppSelector((state) => state.ui.globalLoading);

@@ -178,39 +178,39 @@ export const RESPONSE_CODE = {
 /**
  * 看板状态
  */
-export enum KanbanStatus {
-  ACTIVE = 'ACTIVE',
-  ARCHIVED = 'ARCHIVED',
-  DELETED = 'DELETED',
-}
+export const KanbanStatus = {
+  ACTIVE: 'ACTIVE',
+  ARCHIVED: 'ARCHIVED',
+  DELETED: 'DELETED',
+} as const;
 
 /**
  * 卡片优先级
  */
-export enum CardPriority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  URGENT = 'URGENT',
-}
+export const CardPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT',
+} as const;
 
 /**
  * 用户角色
  */
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  GUEST = 'GUEST',
-}
+export const UserRole = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  GUEST: 'GUEST',
+} as const;
 
 /**
  * 权限类型
  */
-export enum PermissionType {
-  READ = 'READ',
-  WRITE = 'WRITE',
-  ADMIN = 'ADMIN',
-}
+export const PermissionType = {
+  READ: 'READ',
+  WRITE: 'WRITE',
+  ADMIN: 'ADMIN',
+} as const;
 
 // ========== 主题配置 ==========
 

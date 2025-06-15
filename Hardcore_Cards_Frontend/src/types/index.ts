@@ -9,6 +9,24 @@ export interface User {
   updatedAt: string;
 }
 
+// RSA加密相关类型
+export interface RsaKeyResponse {
+  publicKey: string;
+  uuid: string;
+}
+
+// 验证码相关类型
+export interface CaptchaResponse {
+  image: string;    // base64编码的验证码图片
+  uuid: string;     // 验证码标识
+}
+
+// 邮件验证码类型
+export interface EmailCodeForm {
+  email: string;
+  type?: string;    // 验证码类型：register, reset, etc.
+}
+
 // 看板相关类型
 export interface Kanban {
   id: number;
@@ -66,6 +84,10 @@ export interface ApiResponse<T = any> {
 export interface LoginForm {
   username: string;
   password: string;
+  grant_type?: string;
+  client_id?: string;
+  client_secret?: string;
+  rsa_uuid?: string;
 }
 
 export interface RegisterForm {
@@ -74,6 +96,23 @@ export interface RegisterForm {
   confirmPassword: string;
   email: string;
   nickname: string;
+  rsaUuid?: string;
+  emailCode?: string;
+}
+
+// 密码重置表单类型
+export interface ResetPasswordForm {
+  email: string;
+  password: string;
+  emailCode: string;
+  rsaUuid?: string;
+}
+
+// 密码更新表单类型
+export interface UpdatePasswordForm {
+  oldpw: string;
+  newpw: string;
+  rsaUuid?: string;
 }
 
 // 看板表单类型

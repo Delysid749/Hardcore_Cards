@@ -43,14 +43,33 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '0 24px' }}>
+    <div style={{ 
+      maxWidth: '1200px', 
+      margin: '0 auto', 
+      padding: '40px 24px',
+      minHeight: 'calc(100vh - 200px)'
+    }}>
       {/* 欢迎区域 */}
-      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <Title level={1} style={{ marginBottom: '16px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+        <Title level={1} style={{ 
+          marginBottom: '24px', 
+          fontSize: '48px',
+          background: 'linear-gradient(135deg, #1890ff, #722ed1)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontWeight: 'bold'
+        }}>
           🎯 欢迎使用 Hardcore Cards
         </Title>
-        <Paragraph style={{ fontSize: '18px', color: '#666' }}>
-          强大的看板管理工具，让团队协作更高效
+        <Paragraph style={{ 
+          fontSize: '20px', 
+          color: '#666',
+          maxWidth: '600px',
+          margin: '0 auto',
+          lineHeight: '1.6'
+        }}>
+          强大的看板管理工具，让团队协作更高效。支持拖拽排序、实时协作、多人共享，打造现代化的项目管理体验。
         </Paragraph>
         
         {!isAuthenticated && (
@@ -73,12 +92,19 @@ const Home: React.FC = () => {
       </div>
 
       {/* 功能介绍 */}
-      <Row gutter={[24, 24]}>
+      <Row gutter={[32, 32]} style={{ marginBottom: '80px' }}>
         {featureCards.map((card, index) => (
           <Col xs={24} md={12} key={index}>
             <Card
               hoverable
-              style={{ height: '100%' }}
+              style={{ 
+                height: '100%',
+                borderRadius: '12px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                border: '1px solid #f0f0f0',
+                transition: 'all 0.3s ease'
+              }}
+              bodyStyle={{ padding: '32px' }}
               actions={
                 isAuthenticated 
                   ? [
@@ -87,6 +113,8 @@ const Home: React.FC = () => {
                         icon={<PlusOutlined />}
                         onClick={card.action}
                         key="action"
+                        size="large"
+                        style={{ borderRadius: '8px' }}
                       >
                         {card.buttonText}
                       </Button>
@@ -94,55 +122,98 @@ const Home: React.FC = () => {
                   : []
               }
             >
-              <Card.Meta
-                avatar={card.icon}
-                title={<Title level={4}>{card.title}</Title>}
-                description={
-                  <Paragraph style={{ marginBottom: 0 }}>
-                    {card.description}
-                  </Paragraph>
-                }
-              />
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ marginBottom: '20px' }}>
+                  {card.icon}
+                </div>
+                <Title level={3} style={{ marginBottom: '16px', color: '#262626' }}>
+                  {card.title}
+                </Title>
+                <Paragraph style={{ 
+                  marginBottom: 0, 
+                  color: '#666',
+                  fontSize: '16px',
+                  lineHeight: '1.6'
+                }}>
+                  {card.description}
+                </Paragraph>
+              </div>
             </Card>
           </Col>
         ))}
       </Row>
 
       {/* 特性介绍 */}
-      <Card style={{ marginTop: '48px' }}>
-        <Title level={3} style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <div style={{ 
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        borderRadius: '16px',
+        padding: '60px 40px',
+        textAlign: 'center'
+      }}>
+        <Title level={2} style={{ 
+          marginBottom: '48px',
+          color: '#262626',
+          fontSize: '36px'
+        }}>
           ✨ 核心特性
         </Title>
-        <Row gutter={[24, 24]}>
+        <Row gutter={[40, 40]}>
           <Col xs={24} md={8}>
-            <div style={{ textAlign: 'center' }}>
-              <Title level={4}>🚀 现代化技术栈</Title>
-              <Paragraph>
-                基于 React 18 + TypeScript + Ant Design 构建，
+            <div style={{ 
+              background: 'white',
+              borderRadius: '12px',
+              padding: '32px 24px',
+              height: '100%',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+            }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🚀</div>
+              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
+                现代化技术栈
+              </Title>
+              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
+                基于 React 19 + TypeScript + Ant Design 5.x 构建，
                 提供优秀的开发体验和用户体验
               </Paragraph>
             </div>
           </Col>
           <Col xs={24} md={8}>
-            <div style={{ textAlign: 'center' }}>
-              <Title level={4}>🎨 美观的界面设计</Title>
-              <Paragraph>
+            <div style={{ 
+              background: 'white',
+              borderRadius: '12px',
+              padding: '32px 24px',
+              height: '100%',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+            }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🎨</div>
+              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
+                美观的界面设计
+              </Title>
+              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
                 采用现代化的设计语言，简洁美观的界面，
-                支持主题切换和响应式布局
+                支持响应式布局和流畅的交互动画
               </Paragraph>
             </div>
           </Col>
           <Col xs={24} md={8}>
-            <div style={{ textAlign: 'center' }}>
-              <Title level={4}>⚡ 实时协作</Title>
-              <Paragraph>
-                支持多人实时协作编辑，自动同步数据，
-                让团队协作更加高效便捷
+            <div style={{ 
+              background: 'white',
+              borderRadius: '12px',
+              padding: '32px 24px',
+              height: '100%',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+            }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚡</div>
+              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
+                拖拽式操作
+              </Title>
+              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
+                支持直观的拖拽排序，实时数据同步，
+                让看板管理更加高效便捷
               </Paragraph>
             </div>
           </Col>
         </Row>
-      </Card>
+      </div>
     </div>
   );
 };

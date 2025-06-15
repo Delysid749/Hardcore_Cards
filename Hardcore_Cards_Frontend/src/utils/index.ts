@@ -1,72 +1,133 @@
-import dayjs from 'dayjs';
 import { STORAGE_KEYS } from '../constants';
 
-// 本地存储工具
+/**
+ * 浏览器本地存储工具类
+ * 
+ * 原理说明：
+ * 1. 统一封装localStorage操作，提供类型安全
+ * 2. 支持JSON对象的序列化/反序列化
+ * 3. 错误处理，避免存储配额超限等问题
+ */
 export const storage = {
-  get: (key: string) => {
+  /**
+   * 设置存储项
+   */
+  set: <T>(key: string, value: T): void => {
     try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
-    } catch {
-      return null;
-    }
-  },
-  
-  set: (key: string, value: any) => {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
+      const serializedValue = JSON.stringify(value);
+      localStorage.setItem(key, serializedValue);
     } catch (error) {
       console.error('Storage set error:', error);
     }
   },
-  
-  remove: (key: string) => {
-    localStorage.removeItem(key);
+
+  /**
+   * 获取存储项
+   */
+  get: <T>(key: string): T | null => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      console.error('Storage get error:', error);
+      return null;
+    }
   },
-  
-  clear: () => {
-    localStorage.clear();
+
+  /**
+   * 移除存储项
+   */
+  remove: (key: string): void => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error('Storage remove error:', error);
+    }
+  },
+
+  /**
+   * 清空所有存储项
+   */
+  clear: (): void => {
+    try {
+      localStorage.clear();
+    } catch (error) {
+      console.error('Storage clear error:', error);
+    }
   },
 };
 
-// Token 相关工具
+/**
+ * Token管理工具类 - 与原项目保持一致
+ */
 export const tokenUtils = {
-  getToken: () => storage.get(STORAGE_KEYS.TOKEN),
-  setToken: (token: string) => storage.set(STORAGE_KEYS.TOKEN, token),
-  removeToken: () => storage.remove(STORAGE_KEYS.TOKEN),
+  getAccessToken: () => storage.get(STORAGE_KEYS.ACCESS_TOKEN),
+  setAccessToken: (token: string) => storage.set(STORAGE_KEYS.ACCESS_TOKEN, token),
+  removeAccessToken: () => storage.remove(STORAGE_KEYS.ACCESS_TOKEN),
   
   getRefreshToken: () => storage.get(STORAGE_KEYS.REFRESH_TOKEN),
   setRefreshToken: (token: string) => storage.set(STORAGE_KEYS.REFRESH_TOKEN, token),
   removeRefreshToken: () => storage.remove(STORAGE_KEYS.REFRESH_TOKEN),
   
+  // 清除所有Token
   clearAll: () => {
-    tokenUtils.removeToken();
-    tokenUtils.removeRefreshToken();
-    storage.remove(STORAGE_KEYS.USER_INFO);
+    storage.remove(STORAGE_KEYS.ACCESS_TOKEN);
+    storage.remove(STORAGE_KEYS.REFRESH_TOKEN);
   },
+  
+  // 格式化Authorization头
+  formatAuthorizationHeader: (): string | null => {
+    const token = storage.get(STORAGE_KEYS.ACCESS_TOKEN);
+    return token ? `Bearer ${token}` : null;
+  }
 };
 
-// 日期格式化工具
+/**
+ * 日期格式化工具
+ */
 export const dateUtils = {
-  format: (date: string | Date, format = 'YYYY-MM-DD HH:mm:ss') => {
-    return dayjs(date).format(format);
+  /**
+   * 格式化日期为 YYYY-MM-DD HH:mm:ss
+   */
+  formatDateTime: (date: Date | string | number): string => {
+    const d = new Date(date);
+    return d.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
   },
-  
-  formatRelative: (date: string | Date) => {
-    const now = dayjs();
-    const target = dayjs(date);
-    const diff = now.diff(target, 'minute');
-    
-    if (diff < 1) return '刚刚';
-    if (diff < 60) return `${diff}分钟前`;
-    if (diff < 1440) return `${Math.floor(diff / 60)}小时前`;
-    if (diff < 10080) return `${Math.floor(diff / 1440)}天前`;
-    
-    return target.format('YYYY-MM-DD');
-  },
-  
-  isOverdue: (date: string | Date) => {
-    return dayjs().isAfter(dayjs(date));
+
+  /**
+   * 格式化日期为相对时间（如：3分钟前）
+   */
+  formatRelativeTime: (date: Date | string | number): string => {
+    const now = new Date();
+    const target = new Date(date);
+    const diff = now.getTime() - target.getTime();
+
+    const minute = 1000 * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const month = day * 30;
+    const year = month * 12;
+
+    if (diff < minute) {
+      return '刚刚';
+    } else if (diff < hour) {
+      return `${Math.floor(diff / minute)}分钟前`;
+    } else if (diff < day) {
+      return `${Math.floor(diff / hour)}小时前`;
+    } else if (diff < month) {
+      return `${Math.floor(diff / day)}天前`;
+    } else if (diff < year) {
+      return `${Math.floor(diff / month)}个月前`;
+    } else {
+      return `${Math.floor(diff / year)}年前`;
+    }
   },
 };
 
@@ -122,29 +183,35 @@ export const fileUtils = {
   },
 };
 
-// 防抖函数
+/**
+ * 防抖函数
+ */
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeout: NodeJS.Timeout;
+  let timeoutId: NodeJS.Timeout;
+  
   return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
   };
 };
 
-// 节流函数
+/**
+ * 节流函数
+ */
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,
-  wait: number
+  delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let inThrottle: boolean;
+  let lastCall = 0;
+  
   return (...args: Parameters<T>) => {
-    if (!inThrottle) {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
       func(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), wait);
     }
   };
 };

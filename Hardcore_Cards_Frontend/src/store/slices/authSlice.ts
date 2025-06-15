@@ -1,246 +1,157 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { tokenUtils, storage } from '../../utils';
-import { STORAGE_KEYS } from '../../constants';
-import { authService } from '../../services';
-import type { User, LoginForm, RegisterForm } from '../../types';
+import type { User } from '../../types';
+import { loginReq, userInfoReq, testToken } from '../../services/index';
 
 /**
- * 认证状态接口定义
- * 
- * 原理说明：
- * 1. isAuthenticated：用户是否已登录
- * 2. user：当前登录用户信息
- * 3. token：JWT访问令牌
- * 4. loading：异步操作加载状态
- * 5. error：错误信息
+ * 认证状态接口
  */
 interface AuthState {
-  isAuthenticated: boolean;
   user: User | null;
-  token: string | null;
+  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
 }
 
 /**
  * 初始状态
- * 
- * 原理说明：
- * 从localStorage恢复登录状态，实现页面刷新后状态持久化
  */
 const initialState: AuthState = {
-  isAuthenticated: !!tokenUtils.getToken(),
-  user: storage.get(STORAGE_KEYS.USER_INFO),
-  token: tokenUtils.getToken(),
+  user: null,
+  isAuthenticated: !!localStorage.getItem('access_token'),
   loading: false,
   error: null,
 };
 
 /**
- * 异步Action：用户登录
- * 
- * 原理说明：
- * 1. createAsyncThunk：RTK提供的异步action创建器
- * 2. 自动生成pending、fulfilled、rejected三个action
- * 3. 支持错误处理和加载状态管理
- * 4. 使用authService.login调用实际的登录API
+ * 异步登录操作
  */
-export const loginAsync = createAsyncThunk(
+export const login = createAsyncThunk(
   'auth/login',
-  async (loginData: LoginForm, { rejectWithValue }) => {
-    try {
-      const result = await authService.login(loginData);
-      return result;
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : '登录失败');
-    }
+  async (loginData: { username: string; password: string }) => {
+    const data = {
+      grant_type: "password",
+      client_id: "fic", 
+      client_secret: "fic",
+      username: loginData.username,
+      password: loginData.password
+    };
+    
+    const response = await loginReq(data);
+    
+    // 保存Token
+    localStorage.setItem('access_token', response.data.access_token);
+    localStorage.setItem('refresh_token', response.data.refresh_token);
+    
+    // 获取用户信息
+    const userResponse = await userInfoReq();
+    return userResponse.data;
   }
 );
 
 /**
- * 异步Action：用户注册
- * 
- * 原理说明：
- * 使用authService.register调用实际的注册API
+ * 异步获取当前用户信息
  */
-export const registerAsync = createAsyncThunk(
-  'auth/register',
-  async (registerData: RegisterForm, { rejectWithValue }) => {
-    try {
-      const result = await authService.register(registerData);
-      return result;
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : '注册失败');
-    }
-  }
-);
-
-/**
- * 异步Action：获取当前用户信息
- * 
- * 原理说明：
- * 用于验证token有效性并获取最新用户信息
- */
-export const getCurrentUserAsync = createAsyncThunk(
+export const getCurrentUser = createAsyncThunk(
   'auth/getCurrentUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      const user = await authService.getCurrentUser();
-      return user;
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : '获取用户信息失败');
-    }
+  async () => {
+    const response = await userInfoReq();
+    return response.data;
   }
 );
 
 /**
- * 异步Action：用户登出
- * 
- * 原理说明：
- * 调用后端登出接口，清除服务端session
+ * 验证Token有效性
  */
-export const logoutAsync = createAsyncThunk(
-  'auth/logout',
-  async (_, { rejectWithValue }) => {
-    try {
-      await authService.logout();
-      return;
-    } catch (error) {
-      // 即使后端登出失败，也要清除本地状态
-      return rejectWithValue(error instanceof Error ? error.message : '登出失败');
-    }
+export const verifyToken = createAsyncThunk(
+  'auth/verifyToken',
+  async () => {
+    await testToken();
+    const userResponse = await userInfoReq();
+    return userResponse.data;
   }
 );
 
 /**
- * Auth Slice
- * 
- * 原理说明：
- * 1. createSlice：RTK的核心API，自动生成action creators和reducer
- * 2. reducers：同步action处理器
- * 3. extraReducers：异步action处理器
- * 4. Immer：内置不可变更新，可以直接修改state
+ * 认证Slice
  */
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // 清除错误信息
+    /**
+     * 登出操作
+     */
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.error = null;
+      
+      // 清除本地存储
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    },
+    
+    /**
+     * 清除错误
+     */
     clearError: (state) => {
       state.error = null;
     },
     
-    // 登出
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-      state.error = null;
-      
-      // 清除本地存储
-      tokenUtils.clearAll();
-    },
-    
-    // 更新用户信息
-    updateUser: (state, action: PayloadAction<Partial<User>>) => {
-      if (state.user) {
-        state.user = { ...state.user, ...action.payload };
-        storage.set(STORAGE_KEYS.USER_INFO, state.user);
-      }
+    /**
+     * 设置用户信息
+     */
+    setUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
     },
   },
   extraReducers: (builder) => {
-    // 登录异步操作处理
+    // 登录相关
     builder
-      .addCase(loginAsync.pending, (state) => {
+      .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        
-        // 保存到本地存储
-        tokenUtils.setToken(action.payload.token);
-        storage.set(STORAGE_KEYS.USER_INFO, action.payload.user);
-      })
-      .addCase(loginAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-
-    // 注册异步操作处理
-    builder
-      .addCase(registerAsync.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(registerAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        
-        // 保存到本地存储
-        tokenUtils.setToken(action.payload.token);
-        storage.set(STORAGE_KEYS.USER_INFO, action.payload.user);
-      })
-      .addCase(registerAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-
-    // 获取当前用户信息异步操作处理
-    builder
-      .addCase(getCurrentUserAsync.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        storage.set(STORAGE_KEYS.USER_INFO, action.payload);
+        state.isAuthenticated = true;
+        state.error = null;
       })
-      .addCase(getCurrentUserAsync.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
-        // token可能已过期，清除认证状态
+        state.error = action.error.message || '登录失败';
         state.isAuthenticated = false;
-        state.user = null;
-        state.token = null;
-        tokenUtils.clearAll();
-      });
-
-    // 登出异步操作处理
+      })
+      
+    // 获取用户信息相关
     builder
-      .addCase(logoutAsync.pending, (state) => {
-        state.loading = true;
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
       })
-      .addCase(logoutAsync.fulfilled, (state) => {
-        state.loading = false;
-        state.isAuthenticated = false;
+      .addCase(getCurrentUser.rejected, (state) => {
         state.user = null;
-        state.token = null;
-        state.error = null;
-        tokenUtils.clearAll();
+        state.isAuthenticated = false;
       })
-      .addCase(logoutAsync.rejected, (state) => {
-        // 即使登出失败，也要清除本地状态
-        state.loading = false;
-        state.isAuthenticated = false;
+      
+    // Token验证相关
+    builder
+      .addCase(verifyToken.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(verifyToken.rejected, (state) => {
         state.user = null;
-        state.token = null;
-        state.error = null;
-        tokenUtils.clearAll();
+        state.isAuthenticated = false;
+        // 清除无效Token
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
       });
   },
 });
 
-// 导出action creators
-export const { clearError, logout, updateUser } = authSlice.actions;
-
-// 导出reducer
+export const { logout, clearError, setUser } = authSlice.actions;
 export default authSlice.reducer; 
