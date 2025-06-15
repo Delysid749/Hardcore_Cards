@@ -143,77 +143,7 @@ const Home: React.FC = () => {
         ))}
       </Row>
 
-      {/* 特性介绍 */}
-      <div style={{ 
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-        borderRadius: '16px',
-        padding: '60px 40px',
-        textAlign: 'center'
-      }}>
-        <Title level={2} style={{ 
-          marginBottom: '48px',
-          color: '#262626',
-          fontSize: '36px'
-        }}>
-          ✨ 核心特性
-        </Title>
-        <Row gutter={[40, 40]}>
-          <Col xs={24} md={8}>
-            <div style={{ 
-              background: 'white',
-              borderRadius: '12px',
-              padding: '32px 24px',
-              height: '100%',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🚀</div>
-              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
-                现代化技术栈
-              </Title>
-              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
-                基于 React 19 + TypeScript + Ant Design 5.x 构建，
-                提供优秀的开发体验和用户体验
-              </Paragraph>
-            </div>
-          </Col>
-          <Col xs={24} md={8}>
-            <div style={{ 
-              background: 'white',
-              borderRadius: '12px',
-              padding: '32px 24px',
-              height: '100%',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🎨</div>
-              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
-                美观的界面设计
-              </Title>
-              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
-                采用现代化的设计语言，简洁美观的界面，
-                支持响应式布局和流畅的交互动画
-              </Paragraph>
-            </div>
-          </Col>
-          <Col xs={24} md={8}>
-            <div style={{ 
-              background: 'white',
-              borderRadius: '12px',
-              padding: '32px 24px',
-              height: '100%',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚡</div>
-              <Title level={4} style={{ marginBottom: '16px', color: '#262626' }}>
-                拖拽式操作
-              </Title>
-              <Paragraph style={{ color: '#666', fontSize: '15px', lineHeight: '1.6' }}>
-                支持直观的拖拽排序，实时数据同步，
-                让看板管理更加高效便捷
-              </Paragraph>
-            </div>
-          </Col>
-        </Row>
-      </div>
+
     </div>
   );
 };
