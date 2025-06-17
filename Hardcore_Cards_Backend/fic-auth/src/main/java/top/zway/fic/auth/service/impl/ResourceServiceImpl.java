@@ -24,10 +24,21 @@ public class ResourceServiceImpl {
         List<ResourceRoleDO> resourceRoleDos = userAuthDao.listResourceRole();
         Map<String, List<String>> resourceRolesMap = new HashMap<>(resourceRoleDos.size() / 2);
         for (ResourceRoleDO resourceRoleDo : resourceRoleDos) {
-            List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getUrl(), new ArrayList<>());
-            roleList.add(resourceRoleDo.getRole());
-            resourceRolesMap.put(resourceRoleDo.getUrl(), roleList);
+            // 过滤空值，确保url和role都不为空
+            if (resourceRoleDo != null && 
+                resourceRoleDo.getUrl() != null && 
+                resourceRoleDo.getRole() != null &&
+                !resourceRoleDo.getUrl().trim().isEmpty() &&
+                !resourceRoleDo.getRole().trim().isEmpty()) {
+                
+                List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getUrl(), new ArrayList<>());
+                roleList.add(resourceRoleDo.getRole());
+                resourceRolesMap.put(resourceRoleDo.getUrl(), roleList);
+            }
         }
-        redisTemplate.opsForHash().putAll(RedisConstant.RESOURCE_ROLES_MAP, resourceRolesMap);
+        // 只有在有数据时才写入Redis
+        if (!resourceRolesMap.isEmpty()) {
+            redisTemplate.opsForHash().putAll(RedisConstant.RESOURCE_ROLES_MAP, resourceRolesMap);
+        }
     }
 }

@@ -32,7 +32,7 @@ MyBatis映射文件 - 用户认证数据访问层
     - roles：用户角色集合，通过collection收集多个角色名称
     -->
 
-    <resultMap id="userDto" type="top.zway.fic.base.entity.dto.UserDTO">
+    <resultMap id="userDto" type="top.zway.fic.base.entity.DTO.UserDTO">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
@@ -99,8 +99,8 @@ MyBatis映射文件 - 用户认证数据访问层
     -->
     <select id="listResourceRole" resultType="top.zway.fic.base.entity.DO.ResourceRoleDO">
         SELECT
-            `role`,        -- 角色名称
-            resource_url   -- 资源URL
+            `role`,                    -- 角色名称
+            resource_url AS url        -- 资源URL，使用别名映射到url字段
         FROM
             role_resource  -- 角色资源关联表
     </select>

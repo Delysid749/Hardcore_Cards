@@ -5,7 +5,7 @@ import cn.hutool.json.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.zway.fic.base.entity.dto.UserDTO;
+import top.zway.fic.base.entity.DTO.UserDTO;
 import top.zway.fic.web.exception.BizException;
 
 import javax.servlet.http.HttpServletRequest;

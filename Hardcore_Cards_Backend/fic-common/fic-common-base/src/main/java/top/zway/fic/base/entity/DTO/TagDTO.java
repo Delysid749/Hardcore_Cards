@@ -18,23 +18,20 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagDTO implements Serializable {
-    /** 标签ID（更新时使用） */
-    private Long tagId;
 
     /** 所属卡片ID */
     @NotNull(message = "卡片ID不能为空")
     private Long cardId;
 
-    /** 标签内容 */
-    @Size(max = PojoValidConstants.TAG_CONTEXT_MAX_LEN, message = "标签内容最大为15字符")
-    private String content;
+
 
     /** 标签颜色（16进制色值） */
     @Pattern(regexp = "^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$", message = "颜色格式错误")
     private String color;
 
-    /** 标签类型 */
-    private Integer type;
+    /** 标签内容 */
+    @Size(max = PojoValidConstants.TAG_CONTEXT_MAX_LEN, message = "标签内容最大为15字符")
+    private String content;
 
     // 看板id与用户在看板表是可信的，再去查看板与card关系是否存在
 

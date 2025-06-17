@@ -24,8 +24,7 @@ public class TagAO extends TagDTO {
 
     /** 构造函数：从TagDTO组装TagAO */
     public TagAO(TagDTO tagDTO, Long createUser, Long kanbanId) {
-        super(tagDTO.getTagId(), tagDTO.getCardId(), tagDTO.getContent(), 
-              tagDTO.getColor(), tagDTO.getType());
+        super(tagDTO.getCardId(), tagDTO.getColor(), tagDTO.getContent(), tagDTO.getKanbanId());
         this.createUser = createUser;
         this.kanbanId = kanbanId;
     }
