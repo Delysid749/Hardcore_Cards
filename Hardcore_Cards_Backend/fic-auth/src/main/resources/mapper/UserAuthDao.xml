@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+MyBatis映射文件 - 用户认证数据访问层
+
+功能说明：
+1. 定义UserAuthDao接口中方法的具体SQL实现
+2. 配置复杂的结果映射，特别是用户角色的集合映射
+3. 提供用户认证和权限查询的数据库操作
+
+核心作用：
+- 在OAuth2认证流程中，UserServiceImpl通过此映射文件查询用户信息
+- 支持用户角色的一对多关系映射，一个用户可以有多个角色
+- 为权限控制提供资源与角色的映射关系查询
+-->
+<mapper namespace="top.zway.fic.auth.dao.UserAuthDao">
+    <!--
+    用户DTO结果映射
+
+    原理：
+    1. 定义了UserDTO对象与数据库查询结果的映射关系
+    2. 使用collection标签处理一对多关系（一个用户对应多个角色）
+    3. 角色信息作为字符串集合存储在UserDTO的roles属性中
+
+    映射说明：
+    - id：用户唯一标识，对应数据库主键
+    - username：用户名，用于登录验证
+    - password：加密后的密码，用于身份认证
+    - status：用户状态（1-启用，0-禁用）
+    - roles：用户角色集合，通过collection收集多个角色名称
+    -->
+
+    <resultMap id="userDto" type="top.zway.fic.base.entity.dto.UserDTO">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <!--
+        角色集合映射
+        原理：一个用户可能拥有多个角色，需要将多行查询结果合并为一个集合
+        ofType="string"：指定集合元素类型为字符串
+        -->
+        <collection property="roles" ofType="string">
+            <result column="role" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <!--
+    根据用户名查询用户信息及角色
+
+    SQL逻辑说明：
+    1. 主表查询：从user表获取用户基本信息
+    2. 关联查询：通过user_role表获取用户对应的角色信息
+    3. 条件过滤：精确匹配用户名，确保查询准确性
+    4. 关联条件：通过用户ID关联用户表和角色表
+
+    查询结果：
+    - 返回指定用户名的用户信息
+    - 包含该用户拥有的所有角色
+    - 结果通过userDto映射转换为UserDTO对象
+
+    使用场景：
+    在OAuth2认证流程中，当用户提供用户名密码登录时，
+    UserServiceImpl会调用此方法获取用户详细信息进行身份验证
+    -->
+    <select id="listUserDtoByUsername" resultMap="userDto">
+        SELECT
+            u.id,           -- 用户ID
+            u.`username`,   -- 用户名
+            u.`password`,   -- 加密密码
+            u.`status`,     -- 用户状态
+            r.role          -- 角色名称
+        FROM
+            `user` AS u,          -- 用户表
+            `user_role` AS r      -- 用户角色关联表
+        WHERE
+            u.username = #{username}  -- 精确匹配用户名
+          AND u.id = r.userid         -- 关联用户和角色
+    </select>
+
+    <!--
+    查询所有资源角色关系
+
+    功能说明：
+    1. 查询系统中所有的资源与角色的对应关系
+    2. 用于构建权限控制矩阵
+    3. 支持基于角色的访问控制（RBAC）
+
+    数据结构：
+    - role：角色名称（如：ADMIN、USER等）
+    - resource_url：资源URL路径（如：/api/user/**）
+
+    使用场景：
+    - 网关服务可能会调用此方法获取权限配置
+    - 用于动态权限验证，判断用户角色是否有权访问特定资源
+    - 支持细粒度的URL级别权限控制
+    -->
+    <select id="listResourceRole" resultType="top.zway.fic.base.entity.DO.ResourceRoleDO">
+        SELECT
+            `role`,        -- 角色名称
+            resource_url   -- 资源URL
+        FROM
+            role_resource  -- 角色资源关联表
+    </select>
+
+</mapper>
+
+
+
+    

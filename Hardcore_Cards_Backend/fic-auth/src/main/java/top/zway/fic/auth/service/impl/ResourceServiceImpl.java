@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import top.zway.fic.auth.dao.UserAuthDao;
 import top.zway.fic.base.constant.RedisConstant;
-import top.zway.fic.base.entity.doo.ResourceRoleDO;
+import top.zway.fic.base.entity.DO.ResourceRoleDO;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ public class ResourceServiceImpl {
         List<ResourceRoleDO> resourceRoleDos = userAuthDao.listResourceRole();
         Map<String, List<String>> resourceRolesMap = new HashMap<>(resourceRoleDos.size() / 2);
         for (ResourceRoleDO resourceRoleDo : resourceRoleDos) {
-            List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getResourceUrl(), new ArrayList<>());
+            List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getUrl(), new ArrayList<>());
             roleList.add(resourceRoleDo.getRole());
-            resourceRolesMap.put(resourceRoleDo.getResourceUrl(), roleList);
+            resourceRolesMap.put(resourceRoleDo.getUrl(), roleList);
         }
         redisTemplate.opsForHash().putAll(RedisConstant.RESOURCE_ROLES_MAP, resourceRolesMap);
     }
