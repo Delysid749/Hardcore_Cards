@@ -8,27 +8,39 @@ spring:
         - id: fic-auth_oauth
           uri: lb://fic-auth
           predicates:
-            - Path=/oauth/**
+            - Path=/api/oauth/**
+          filters:
+            - StripPrefix=1
         - id: fic-user
           uri: lb://fic-user
           predicates:
-            - Path=/user/**
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=1
         - id: fic-kanban
           uri: lb://fic-kanban
           predicates:
-            - Path=/kanban/**
+            - Path=/api/kanban/**
+          filters:
+            - StripPrefix=1
         - id: fic-kanban_invitation
           uri: lb://fic-kanban
           predicates:
-            - Path=/invitation/**
+            - Path=/api/invitation/**
+          filters:
+            - StripPrefix=1
         - id: fic-search
           uri: lb://fic-search
           predicates:
-            - Path=/search/**
+            - Path=/api/search/**
+          filters:
+            - StripPrefix=1
         - id: fic-mail
           uri: lb://fic-mail
           predicates:
-            - Path=/mail/**
+            - Path=/api/mail/**
+          filters:
+            - StripPrefix=1
   security:
     oauth2:
       resourceserver:
@@ -46,7 +58,7 @@ secure:
   ignore:
     urls:
       - "/actuator/**"
-      - "/oauth/**"
-      - "/user/register"
-      - "/mail/verification-code/**"
-      - "/user/password/reset" 
+      - "/api/oauth/**"
+      - "/api/user/register"
+      - "/api/mail/verification-code/**"
+      - "/api/user/password/reset" 

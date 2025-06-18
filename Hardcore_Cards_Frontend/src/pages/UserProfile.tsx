@@ -123,11 +123,8 @@ const UserProfile: React.FC = () => {
   }, [currentUser, profileForm]);
 
   return (
-    <div style={{ padding: '24px', background: '#f5f5f5', minHeight: '100vh' }}>
+    <div style={{ padding: '24px', background: '#fff', minHeight: '100%' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <Title level={2} style={{ marginBottom: '24px', color: '#262626' }}>
-          个人中心
-        </Title>
 
         <Row gutter={[24, 24]}>
           {/* 左侧个人信息卡片 */}

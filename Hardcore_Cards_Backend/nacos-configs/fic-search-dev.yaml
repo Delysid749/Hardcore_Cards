@@ -38,8 +38,20 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: top.zway.fic.base.entity
+# 日志配置 - SQL调试
+logging:
+  level:
+    # MyBatis SQL日志
+    top.zway.fic.search.dao: debug
+    # Druid SQL监控日志
+    druid.sql: debug
+    druid.sql.DataSource: debug
+    druid.sql.Connection: debug
+    druid.sql.Statement: debug
+    druid.sql.ResultSet: debug
 elasticsearch:
   host: localhost
   port: 9200 

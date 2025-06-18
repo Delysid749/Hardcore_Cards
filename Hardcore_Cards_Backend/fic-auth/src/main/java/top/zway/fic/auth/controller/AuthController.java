@@ -86,16 +86,7 @@ public class AuthController {
     public R postAccessToken(Principal principal,@RequestParam Map<String,String> parameters) throws HttpRequestMethodNotSupportedException{
         // 检查是否为密码授权模式，只有密码模式才需要额外的安全验证
         if(AuthConstant.GRANT_TYPE_PASSWORD.equals(parameters.get(AuthConstant.GRANT_TYPE))){
-            // Step 1: reCAPTCHA验证码校验
-            // 获取前端提交的验证码token
-            String captchaCode = parameters.get(AuthConstant.CAPTCHA_CODE_KEY);
-            if(captchaCode == null){
-                return R.failed("先输入验证码");
-            }
-            // 调用Google reCAPTCHA服务验证token有效性
-            if (!reCaptchaVerificationService.verify(captchaCode)) {
-                return R.failed("验证失败");
-            }
+            
 
             // Step 2: RSA密码解密
             // 获取RSA密钥UUID和加密密码

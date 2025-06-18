@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import top.zway.fic.base.constant.RabbitMqConstants;
-import top.zway.fic.base.entity.bo.SearchUpdateBO;
+import top.zway.fic.base.entity.BO.SearchUpdateBO;
 import top.zway.fic.search.config.SearchUpdateRabbitMqConfig;
 import top.zway.fic.search.handler.PartialUpdateStrategyContext;
 

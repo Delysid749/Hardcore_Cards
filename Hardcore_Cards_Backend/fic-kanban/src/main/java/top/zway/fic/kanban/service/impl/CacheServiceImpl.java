@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import top.zway.fic.base.constant.RedisConstant;
-import top.zway.fic.base.entity.vo.ColumnVO;
+import top.zway.fic.base.entity.VO.ColumnVO;
 import top.zway.fic.kanban.config.CacheDeleteTTLRabbitMqConfiguration;
 import top.zway.fic.kanban.service.CacheService;
 import top.zway.fic.redis.util.RedisUtils;

@@ -13,11 +13,16 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
 import top.zway.fic.base.constant.AuthConstant;
 import top.zway.fic.gateway.authorization.AuthorizationManager;
 import top.zway.fic.gateway.handler.RestAuthenticationEntryPoint;
 import top.zway.fic.gateway.handler.RestfulAccessDeniedHandler;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Configuration
@@ -37,13 +42,41 @@ public class ResourceServerConfig {
                 .pathMatchers(ArrayUtil.toArray(ignoreUrlsConfig.getUrls(),String.class)).permitAll()
                 //鉴权管理器配置
                 .anyExchange().access(authorizationManager)
-                .and().exceptionHandling()
+                .and()
+                // 添加CORS配置
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .exceptionHandling()
                 //处理未授权
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 //处理未认证
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and().csrf().disable();
         return http.build();
+    }
+
+    /**
+     * CORS配置源
+     * 解决跨域问题
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // 允许所有源（Spring Boot 2.2.2 兼容版本）
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        // 允许所有HTTP方法
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        // 允许所有请求头
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        // 允许发送Cookie（注意：当allowedOrigins为*时，不能设置为true）
+        configuration.setAllowCredentials(false);
+        // 预检请求缓存时间
+        configuration.setMaxAge(3600L);
+        // 暴露的响应头
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -55,5 +88,4 @@ public class ResourceServerConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
-
 }

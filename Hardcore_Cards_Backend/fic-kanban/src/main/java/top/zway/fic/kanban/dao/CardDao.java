@@ -2,8 +2,8 @@ package top.zway.fic.kanban.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import top.zway.fic.base.entity.doo.CardDO;
-import top.zway.fic.base.entity.doo.KanbanColumnDO;
+import top.zway.fic.base.entity.DO.CardDO;
+import top.zway.fic.base.entity.DO.KanbanColumnDO;
 
 import java.util.List;
 

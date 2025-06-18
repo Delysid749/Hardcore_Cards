@@ -1,28 +1,35 @@
 package top.zway.fic.user.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import top.zway.fic.base.constant.RegexConstant;
 import top.zway.fic.base.entity.DTO.RegisterUserDTO;
 import top.zway.fic.base.result.R;
+import top.zway.fic.user.rpc.RsaRpcService;
 import top.zway.fic.user.service.UserSecurityService;
 import top.zway.fic.web.exception.Jsr303Checker;
-
+import top.zway.fic.web.holder.LoginUserHolder;
+import top.zway.fic.base.constant.PojoValidConstants;
 import javax.validation.Valid;
 
 /**
  * 用户安全控制器
  * 处理用户注册、密码修改等安全相关操作
  */
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-@Api("用户账户密码api")
-@RequiredArgsConstructor
 public class UserSecurityController {
 
     private final UserSecurityService userSecurityService;
+    private final LoginUserHolder loginUserHolder;
+
+    @Autowired(required = false)
+    @Qualifier("rsaRpcService")
+    private RsaRpcService rsaRpcService;
 
     /**
      * 新用户注册接口
@@ -33,41 +40,74 @@ public class UserSecurityController {
      * @return 注册结果响应
      */
     @PostMapping("/register")
-    @ApiOperation("新用户注册")
     public R registerNewUser(@Valid @RequestBody RegisterUserDTO registerUserDTO, BindingResult bindingResult) {
         // 校验请求参数格式是否正确
         Jsr303Checker.check(bindingResult);
 
-        // 调用业务层执行用户注册逻辑
-        boolean success = userSecurityService.registerNewUser(registerUserDTO.getUsername(), registerUserDTO.getPassword());
+        // 处理密码解密（RSA加密是可选的）
+        String finalPassword = registerUserDTO.getPassword();
+        
+        // 检查是否提供了RSA UUID且不为空，并且RsaRpcService可用
+        if (rsaRpcService != null && registerUserDTO.getRsaUuid() != null && !registerUserDTO.getRsaUuid().trim().isEmpty()) {
+            // 如果提供了RSA UUID，则进行解密
+            try {
+                String decrypt = rsaRpcService.decrypt(registerUserDTO.getRsaUuid(), registerUserDTO.getPassword(), true);
+                if (decrypt == null || decrypt.trim().isEmpty()) {
+                    return R.failed("密码解密失败，请重新获取加密密钥");
+                }
+                finalPassword = decrypt;
+            } catch (Exception e) {
+                return R.failed("RSA解密服务异常，请稍后重试");
+            }
+        }
+        // 如果没有提供RSA UUID或为空，则直接使用原始密码（兼容模式）
+
+        // 调用业务层执行用户注册逻辑，使用最终确定的密码
+        boolean success = userSecurityService.registerNewUser(registerUserDTO.getUsername(), finalPassword);
 
         // 根据注册结果返回相应响应
         return R.judge(success, "邮箱已存在");
     }
 
-    /**
-     * 检查用户名是否存在接口
-     * 供前端实时校验用户名可用性
-     * 
-     * @param username 要检查的用户名（邮箱）
-     * @return 检查结果，包含exists字段表示是否存在
-     */
-    @GetMapping("/check-username")
-    @ApiOperation("检查用户名是否存在")
-    public R checkUsername(@RequestParam("username") String username) {
-        // 参数校验
-        if (username == null || username.trim().isEmpty()) {
-            return R.failed("用户名不能为空");
+    @PutMapping("/password")
+    public R updatePassword(@RequestParam("oldpw") String oldpw, @RequestParam("newpw") String newpw, @RequestParam("rsaUuid") String rsaUuid) {
+        if (oldpw == null || newpw == null || rsaUuid == null) {
+            return R.failed("参数不能为空");
         }
-        
-        // 调用业务层检查用户名是否存在
-        boolean exists = userSecurityService.isUsernameExists(username);
-        
-        // 返回检查结果
-        // 修复：使用正确的R类方法，R类没有ok()和put()方法
-        return R.success(new java.util.HashMap<String, Object>() {{
-            put("message", "检查完成");
-            put("exists", exists);
-        }});
+        newpw = rsaRpcService.decrypt(rsaUuid, newpw, false);
+        oldpw = rsaRpcService.decrypt(rsaUuid, oldpw, true);
+        if (newpw == null || oldpw == null) {
+            return R.failed("解密失败");
+        }
+        if (newpw.length() < PojoValidConstants.PASSWORD_MIN_LEN || newpw.length() > PojoValidConstants.PASSWORD_MAX_LEN){
+            return R.failed("密码长度应在6-50之间");
+        }
+        Long id = loginUserHolder.getCurrentUser().getId();
+        boolean success = userSecurityService.updatePassword(oldpw, newpw, id);
+        return R.judge(success,"旧密码不正确");
     }
+
+    @PutMapping("/password/reset")
+    public R resetPassword(@Valid @RequestBody RegisterUserDTO registerUserDTO, BindingResult bindingResult) {
+        Jsr303Checker.check(bindingResult);
+        String decrypt = rsaRpcService.decrypt(registerUserDTO.getRsaUuid(), registerUserDTO.getPassword(), true);
+        if (decrypt == null) {
+            return R.failed("解密失败");
+        }
+        boolean success = userSecurityService.resetPassword(registerUserDTO.getUsername(), decrypt);
+        return R.judge(success,"邮箱未注册");
+    }
+
+    @PutMapping("/email")
+    public R updateEmail(String email){
+        // XXX 更换邮箱验证码 这里暂不实现
+        boolean match = RegexConstant.EMAIL_REGEX.asPredicate().test(email);
+        if (!match){
+            return R.failed("邮箱格式不正确");
+        }
+        Long id = loginUserHolder.getCurrentUser().getId();
+        boolean success = userSecurityService.updateEmail(email, id);
+        return R.judge(success,"修改失败");
+    }
+
 }

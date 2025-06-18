@@ -4,7 +4,7 @@
     <sql id="Base_Column_List">
         column_id, column_order, column_title, kanban_id, update_user, create_time, update_time
     </sql>
-    <insert id="insert" parameterType="top.zway.fic.base.entity.doo.KanbanColumnDO" useGeneratedKeys="true"
+    <insert id="insert" parameterType="top.zway.fic.base.entity.DO.KanbanColumnDO" useGeneratedKeys="true"
             keyColumn="column_id" keyProperty="columnId">
         insert into kanban_column (column_order, column_title, kanban_id, update_user )
         values ( #{columnOrder}, #{columnTitle}, #{kanbanId}, #{updateUser} )
@@ -71,14 +71,14 @@
         LIMIT 0,#{getSize}
     </select>
 
-    <select id="selectByPrimaryKey" resultType="top.zway.fic.base.entity.doo.KanbanColumnDO">
+    <select id="selectByPrimaryKey" resultType="top.zway.fic.base.entity.DO.KanbanColumnDO">
         select
         <include refid="Base_Column_List" />
         from kanban_column
         where column_id = #{columnId}
     </select>
 
-    <select id="selectByKanbanId" resultType="top.zway.fic.base.entity.doo.KanbanColumnDO">
+    <select id="selectByKanbanId" resultType="top.zway.fic.base.entity.DO.KanbanColumnDO">
         select
         <include refid="Base_Column_List" />
         from kanban_column

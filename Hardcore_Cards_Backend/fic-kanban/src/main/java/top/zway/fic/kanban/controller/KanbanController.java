@@ -1,14 +1,12 @@
 package top.zway.fic.kanban.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import top.zway.fic.base.entity.ao.KanbanAO;
-import top.zway.fic.base.entity.dto.KanbanDTO;
-import top.zway.fic.base.entity.vo.KanbanContentVO;
-import top.zway.fic.base.entity.vo.KanbanHomeVO;
+import top.zway.fic.base.entity.AO.KanbanAO;
+import top.zway.fic.base.entity.DTO.KanbanDTO;
+import top.zway.fic.base.entity.VO.KanbanContentVO;
+import top.zway.fic.base.entity.VO.KanbanHomeVO;
 import top.zway.fic.base.result.R;
 import top.zway.fic.kanban.service.KanbanService;
 import top.zway.fic.kanban.service.ShareKanbanService;
@@ -21,14 +19,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kanban")
-@Api("看板controller")
+
 public class KanbanController {
     private final LoginUserHolder loginUserHolder;
     private final KanbanService kanbanService;
     private final ShareKanbanService shareKanbanService;
 
     @PostMapping("")
-    @ApiOperation("新增看板")
     public R insertKanban(@Valid @RequestBody KanbanDTO kanbanDTO, BindingResult bindingResult) {
         Jsr303Checker.check(bindingResult);
         Long id = loginUserHolder.getCurrentUser().getId();
@@ -38,7 +35,6 @@ public class KanbanController {
     }
 
     @DeleteMapping("")
-    @ApiOperation("删除看板")
     public R deleteKanban(Long kanbanId) {
         if (kanbanId == null) {
             return R.failed("路径错误");
@@ -49,7 +45,6 @@ public class KanbanController {
     }
 
     @PutMapping("")
-    @ApiOperation("修改看板信息")
     public R updateKanban(@Valid @RequestBody KanbanDTO kanbanDTO, BindingResult bindingResult) {
         Jsr303Checker.check(bindingResult);
         Long id = loginUserHolder.getCurrentUser().getId();
@@ -59,7 +54,6 @@ public class KanbanController {
     }
 
     @GetMapping("")
-    @ApiOperation("获取看板")
     public R<List<KanbanHomeVO>> getMyKanbans(){
         Long id = loginUserHolder.getCurrentUser().getId();
         List<KanbanHomeVO> myKanbans = kanbanService.getMyKanbans(id);
@@ -67,7 +61,6 @@ public class KanbanController {
     }
 
     @GetMapping("/content")
-    @ApiOperation("看板内容")
     public R<KanbanContentVO> getKanbanContent(@RequestParam("kanbanId") Long kanbanId){
         Long id = loginUserHolder.getCurrentUser().getId();
         KanbanContentVO kanbanContent = kanbanService.getKanbanContent(id, kanbanId);
@@ -75,7 +68,6 @@ public class KanbanController {
     }
 
     @PostMapping("/collect")
-    @ApiOperation("收藏/取消收藏")
     public R collect(@RequestParam("kanbanId") Long kanbanId,@RequestParam("isCollected") Boolean isCollected){
         Long id = loginUserHolder.getCurrentUser().getId();
         boolean success = shareKanbanService.updateCollectState(kanbanId, id, isCollected);
@@ -83,7 +75,6 @@ public class KanbanController {
     }
 
     @DeleteMapping("/share")
-    @ApiOperation("退出协作")
     public R deleteShare(@RequestParam("kanbanId") Long kanbanId, @RequestParam("userId") Long userId){
         Long actionUserId = loginUserHolder.getCurrentUser().getId();
         boolean success = shareKanbanService.deleteShare(kanbanId, userId, actionUserId);

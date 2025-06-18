@@ -2,7 +2,7 @@ package top.zway.fic.kanban.rpc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import top.zway.fic.base.entity.doo.UserInfoDO;
+import top.zway.fic.base.entity.DO.UserInfoDO;
 import top.zway.fic.base.result.R;
 
 import java.util.Arrays;

@@ -2,7 +2,7 @@ package top.zway.fic.kanban.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import top.zway.fic.base.entity.doo.InvitationDO;
+import top.zway.fic.base.entity.DO.InvitationDO;
 
 import java.util.Date;
 import java.util.List;

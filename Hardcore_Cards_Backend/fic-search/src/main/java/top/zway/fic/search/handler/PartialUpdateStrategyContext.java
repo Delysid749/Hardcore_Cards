@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.zway.fic.base.constant.RedisConstant;
-import top.zway.fic.base.entity.bo.SearchUpdateBO;
+import top.zway.fic.base.entity.BO.SearchUpdateBO;
 import top.zway.fic.redis.util.RedisUtils;
 import top.zway.fic.web.exception.BizException;
 

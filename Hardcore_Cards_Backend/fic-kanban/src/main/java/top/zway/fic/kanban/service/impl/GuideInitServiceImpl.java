@@ -3,7 +3,7 @@ package top.zway.fic.kanban.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.zway.fic.base.constant.KanbanConstants;
-import top.zway.fic.base.entity.doo.*;
+import top.zway.fic.base.entity.DO.*;
 import top.zway.fic.kanban.dao.*;
 import top.zway.fic.kanban.service.GuideInitService;
 

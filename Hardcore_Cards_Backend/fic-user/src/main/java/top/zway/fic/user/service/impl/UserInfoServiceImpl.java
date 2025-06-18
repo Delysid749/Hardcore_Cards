@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import top.zway.fic.base.entity.doo.UserInfoDO;
+import top.zway.fic.base.entity.DO.UserInfoDO;
 import top.zway.fic.user.dao.UserInfoDao;
 import top.zway.fic.user.service.UserInfoService;
 import top.zway.fic.user.util.OssUtil;

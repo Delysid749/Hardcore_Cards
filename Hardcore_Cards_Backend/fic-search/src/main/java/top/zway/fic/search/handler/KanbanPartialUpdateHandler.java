@@ -2,8 +2,8 @@ package top.zway.fic.search.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.zway.fic.base.entity.bo.SearchUpdateBO;
-import top.zway.fic.base.entity.doo.KanbanDO;
+import top.zway.fic.base.entity.BO.SearchUpdateBO;
+import top.zway.fic.base.entity.DO.KanbanDO;
 import top.zway.fic.redis.util.RedisUtils;
 import top.zway.fic.search.dao.ContentInfoIndexEsDao;
 import top.zway.fic.search.dao.KanbanDao;

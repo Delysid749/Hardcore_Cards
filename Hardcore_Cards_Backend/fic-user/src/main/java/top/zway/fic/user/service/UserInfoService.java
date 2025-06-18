@@ -1,7 +1,7 @@
 package top.zway.fic.user.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import top.zway.fic.base.entity.doo.UserInfoDO;
+import top.zway.fic.base.entity.DO.UserInfoDO;
 
 public interface UserInfoService {
     /**

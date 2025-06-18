@@ -211,7 +211,11 @@ const KanbanList: React.FC = () => {
   );
 
   return (
-    <div style={{ padding: '5px 20px' }}>
+    <div style={{ 
+      padding: '24px 20px',
+      background: '#fff',
+      minHeight: '100%'
+    }}>
       <Spin spinning={loading}>
         {/* 收藏看板区域 */}
         {collected.length > 0 && (

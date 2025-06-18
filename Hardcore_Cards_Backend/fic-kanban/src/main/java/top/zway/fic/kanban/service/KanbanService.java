@@ -1,8 +1,8 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.ao.KanbanAO;
-import top.zway.fic.base.entity.vo.KanbanContentVO;
-import top.zway.fic.base.entity.vo.KanbanHomeVO;
+import top.zway.fic.base.entity.AO.KanbanAO;
+import top.zway.fic.base.entity.VO.KanbanContentVO;
+import top.zway.fic.base.entity.VO.KanbanHomeVO;
 
 import java.util.List;
 

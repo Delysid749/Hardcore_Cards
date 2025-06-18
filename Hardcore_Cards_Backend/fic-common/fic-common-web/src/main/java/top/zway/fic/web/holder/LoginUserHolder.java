@@ -28,4 +28,20 @@ public class LoginUserHolder {
         }
         return userDTO;
     }
+
+    /**
+     * 获取当前登录用户的ID
+     * 
+     * @return 用户ID，如果未登录则返回null
+     */
+    public Integer getCurrentUserId() {
+        try {
+            UserDTO currentUser = getCurrentUser();
+            return currentUser != null && currentUser.getId() != null ? 
+                   Convert.toInt(currentUser.getId()) : null;
+        } catch (Exception e) {
+            // 如果获取用户信息失败，返回null而不是抛出异常
+            return null;
+        }
+    }
 }

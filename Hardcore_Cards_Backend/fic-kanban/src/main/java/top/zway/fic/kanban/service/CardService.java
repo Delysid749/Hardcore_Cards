@@ -1,6 +1,6 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.ao.CardAO;
+import top.zway.fic.base.entity.AO.CardAO;
 
 public interface CardService {
     /**

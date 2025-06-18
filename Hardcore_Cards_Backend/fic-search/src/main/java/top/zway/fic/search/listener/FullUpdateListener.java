@@ -7,7 +7,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 import top.zway.fic.base.constant.RabbitMqConstants;
 import top.zway.fic.base.constant.RedisConstant;
-import top.zway.fic.base.entity.bo.SearchUpdateBO;
+import top.zway.fic.base.entity.BO.SearchUpdateBO;
 import top.zway.fic.redis.util.RedisUtils;
 import top.zway.fic.search.config.SearchUpdateRabbitMqConfig;
 import top.zway.fic.search.service.SearchService;

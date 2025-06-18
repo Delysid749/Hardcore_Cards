@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import top.zway.fic.base.entity.bo.SearchUpdateBO;
+import top.zway.fic.base.entity.BO.SearchUpdateBO;
 import top.zway.fic.kanban.config.SearchUpdateRabbitMqConfig;
 import top.zway.fic.kanban.service.SearchUpdateService;
 

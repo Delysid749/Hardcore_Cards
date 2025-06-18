@@ -1,14 +1,12 @@
 package top.zway.fic.kanban.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
+
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import top.zway.fic.base.entity.ao.KanbanColumnAO;
-import top.zway.fic.base.entity.dto.KanbanColumnDTO;
+import top.zway.fic.base.entity.AO.KanbanColumnAO;
+import top.zway.fic.base.entity.DTO.KanbanColumnDTO;
 import top.zway.fic.base.result.R;
 import top.zway.fic.kanban.service.ColumnService;
 import top.zway.fic.web.exception.Jsr303Checker;
@@ -19,13 +17,12 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kanban/column")
-@Api("看板列controller")
 public class ColumnController {
     private final LoginUserHolder loginUserHolder;
     private final ColumnService columnService;
 
     @PostMapping("")
-    @ApiOperation("新增列")
+
     public R insertColumn(@Valid @RequestBody KanbanColumnDTO kanbanColumnDTO, BindingResult bindingResult) {
         Jsr303Checker.check(bindingResult);
         Long id = loginUserHolder.getCurrentUser().getId();
@@ -35,7 +32,7 @@ public class ColumnController {
     }
 
     @DeleteMapping("")
-    @ApiOperation("删除列")
+
     public R deleteColumn(@RequestParam("columnId") Long columnId) {
         if (columnId == null) {
             return R.failed("路径错误");
@@ -46,7 +43,7 @@ public class ColumnController {
     }
 
     @PutMapping("")
-    @ApiOperation("修改列信息")
+
     public R updateColumn(@Valid @RequestBody KanbanColumnDTO kanbanColumnDTO, BindingResult bindingResult) {
         Jsr303Checker.check(bindingResult);
         Long id = loginUserHolder.getCurrentUser().getId();
@@ -56,7 +53,7 @@ public class ColumnController {
     }
 
     @PutMapping("/order")
-    @ApiOperation("调整列顺序")
+
     public R moveColumn(@RequestParam("move") Integer move, @RequestParam("columnId") Long columnId) {
         if (move == null || move == 0 || columnId == 0) {
             return R.failed("参数错误");

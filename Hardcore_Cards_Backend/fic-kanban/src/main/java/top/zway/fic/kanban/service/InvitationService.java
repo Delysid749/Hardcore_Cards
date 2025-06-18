@@ -1,6 +1,6 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.vo.InvitationVO;
+import top.zway.fic.base.entity.VO.InvitationVO;
 
 import java.util.List;
 

@@ -26,14 +26,14 @@ public class ResourceServiceImpl {
         for (ResourceRoleDO resourceRoleDo : resourceRoleDos) {
             // 过滤空值，确保url和role都不为空
             if (resourceRoleDo != null && 
-                resourceRoleDo.getUrl() != null && 
+                resourceRoleDo.getResourceUrl() != null &&
                 resourceRoleDo.getRole() != null &&
-                !resourceRoleDo.getUrl().trim().isEmpty() &&
+                !resourceRoleDo.getResourceUrl().trim().isEmpty() &&
                 !resourceRoleDo.getRole().trim().isEmpty()) {
                 
-                List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getUrl(), new ArrayList<>());
+                List<String> roleList = resourceRolesMap.getOrDefault(resourceRoleDo.getResourceUrl(), new ArrayList<>());
                 roleList.add(resourceRoleDo.getRole());
-                resourceRolesMap.put(resourceRoleDo.getUrl(), roleList);
+                resourceRolesMap.put(resourceRoleDo.getResourceUrl(), roleList);
             }
         }
         // 只有在有数据时才写入Redis

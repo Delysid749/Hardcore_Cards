@@ -1,0 +1,348 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------------< [0;36mtop.zway:fic-user[0;1m >--------------------------[m
+[[1;34mINFO[m] [1mBuilding fic-user 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mspring-boot-maven-plugin:2.2.2.RELEASE:run[m [1m(default-cli)[0;1m > [0;1mtest-compile[m @ [36mfic-user[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mfic-user[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 5 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:compile[m [1m(default-compile)[m @ [36mfic-user[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mfic-user[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.1:testCompile[m [1m(default-testCompile)[m @ [36mfic-user[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mspring-boot-maven-plugin:2.2.2.RELEASE:run[m [1m(default-cli)[0;1m < [0;1mtest-compile[m @ [36mfic-user[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mspring-boot-maven-plugin:2.2.2.RELEASE:run[m [1m(default-cli)[m @ [36mfic-user[0;1m ---[m
+[[1;34mINFO[m] Attaching agents: []
+2025-06-18 14:20:08.138  INFO 24788 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.2.2.RELEASE)
+
+2025-06-18 14:20:08.430  INFO 24788 --- [  restartedMain] c.a.c.n.c.NacosPropertySourceBuilder     : Loading nacos data, dataId: 'fic-user-dev.yaml', group: 'DEFAULT_GROUP'
+2025-06-18 14:20:08.432  INFO 24788 --- [  restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-fic-user-dev.yaml'}, BootstrapPropertySource {name='bootstrapProperties-fic-user.yaml'}]
+2025-06-18 14:20:08.454  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : The following profiles are active: dev
+2025-06-18 14:20:08.708  WARN 24788 --- [  restartedMain] o.s.boot.actuate.endpoint.EndpointId     : Endpoint ID 'nacos-config' contains invalid characters, please migrate to a valid format.
+2025-06-18 14:20:08.710  WARN 24788 --- [  restartedMain] o.s.boot.actuate.endpoint.EndpointId     : Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2025-06-18 14:20:08.814  WARN 24788 --- [  restartedMain] o.s.boot.actuate.endpoint.EndpointId     : Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2025-06-18 14:20:08.842  INFO 24788 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=60fd30a3-9780-30c3-a8d0-f8199cb0d5cf
+2025-06-18 14:20:08.888  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:20:08.959  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:20:08.983  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration$$EnhancerBySpringCGLIB$$2f5bdae6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:20:09.238  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9066 (http)
+2025-06-18 14:20:09.242  INFO 24788 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-18 14:20:09.242  INFO 24788 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2025-06-18 14:20:09.286  INFO 24788 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-18 14:20:09.286  INFO 24788 --- [  restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 823 ms
+2025-06-18 14:20:09.293  INFO 24788 --- [  restartedMain] c.a.c.s.SentinelWebAutoConfiguration     : [Sentinel Starter] register Sentinel CommonFilter with urlPatterns: [/*].
+2025-06-18 14:20:09.375  INFO 24788 --- [  restartedMain] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2025-06-18 14:20:09.456  INFO 24788 --- [  restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2025-06-18 14:20:09.512  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:20:09.512  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Environment :null
+2025-06-18 14:20:09.512  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:20:09.532  INFO 24788 --- [  restartedMain] o.apache.catalina.core.StandardContext   : Suspicious URL pattern: [/**] in context [], see sections 12.1 and 12.2 of the Servlet specification
+2025-06-18 14:20:09.533  INFO 24788 --- [  restartedMain] o.s.boot.web.servlet.RegistrationBean    : Servlet dispatcherServlet was not registered (possibly already registered?)
+Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+Using VFS adapter org.mybatis.spring.boot.autoconfigure.SpringBootVFS
+Checking to see if class top.zway.fic.base.entity.DTO.CardDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanColumnDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.RegisterUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.LoginUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.UserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.TagDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanContentVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CardVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.InvitationVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanHomeVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.SearchVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.ColumnVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.RsaKeyVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CaptchaVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.CardDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.InvitationDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ResourceRoleDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.TagDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.GuideTemplateDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserInfoDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.RoleUserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanColumnDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ShareKanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.MailMessageBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO$UpdateTypeEnum matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.InvitationReminderBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanColumnAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.TagAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.CardAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanAO matches criteria [is assignable to Object]
+Scanned package: 'top.zway.fic.base.entity' for aliases
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/RoleUserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserInfoDao.xml]'
+2025-06-18 14:20:09.759  WARN 24788 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-06-18 14:20:09.794  WARN 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2025-06-18 14:20:09.794  INFO 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2025-06-18 14:20:09.801  WARN 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2025-06-18 14:20:09.801  INFO 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2025-06-18 14:20:09.903  INFO 24788 --- [  restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2025-06-18 14:20:10.005  INFO 24788 --- [  restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService
+2025-06-18 14:20:10.184  INFO 24788 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 20 endpoint(s) beneath base path '/actuator'
+2025-06-18 14:20:10.246  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9066 (http) with context path ''
+2025-06-18 14:20:10.249  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [BEAT] adding beat: {"cluster":"DEFAULT","ip":"10.9.29.89","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":9066,"scheduled":false,"serviceName":"DEFAULT_GROUP@@fic-user","stopped":false,"weight":1.0} to beat map.
+2025-06-18 14:20:10.277  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@fic-user with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"10.9.29.89","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":9066,"weight":1.0}
+2025-06-18 14:20:10.316  INFO 24788 --- [  restartedMain] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, fic-user 10.9.29.89:9066 register finished
+2025-06-18 14:20:10.322  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : Started UserMain9066 in 2.41 seconds (JVM running for 2.689)
+2025-06-18 14:20:10.327  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user-dev.yaml+DEFAULT_GROUP
+2025-06-18 14:20:10.327  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2025-06-18 14:20:10.327  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user.yaml+DEFAULT_GROUP
+2025-06-18 14:20:10.327  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user.yaml, group=DEFAULT_GROUP, cnt=1
+INFO: log base dir is: /Users/WigsM/logs/csp/
+INFO: log name use pid is: false
+2025-06-18 14:24:31.950  INFO 24788 --- [       Thread-1] c.a.c.n.registry.NacosServiceRegistry    : De-registering from Nacos Server now...
+2025-06-18 14:24:31.959  INFO 24788 --- [       Thread-1] com.alibaba.nacos.client.naming          : [BEAT] removing beat: DEFAULT_GROUP@@fic-user:10.9.29.89:9066 from beat map.
+2025-06-18 14:24:31.959  INFO 24788 --- [       Thread-1] com.alibaba.nacos.client.naming          : [DEREGISTER-SERVICE] public deregistering service DEFAULT_GROUP@@fic-user with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"10.9.29.89","ipDeleteTimeout":30000,"metadata":{},"port":9066,"weight":1.0}
+2025-06-18 14:24:32.001  INFO 24788 --- [       Thread-1] c.a.c.n.registry.NacosServiceRegistry    : De-registration finished.
+2025-06-18 14:24:32.006  INFO 24788 --- [       Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2025-06-18 14:24:32.017  INFO 24788 --- [       Thread-1] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2025-06-18 14:24:32.029  INFO 24788 --- [       Thread-1] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.2.2.RELEASE)
+
+2025-06-18 14:24:32.724  INFO 24788 --- [  restartedMain] c.a.c.n.c.NacosPropertySourceBuilder     : Loading nacos data, dataId: 'fic-user-dev.yaml', group: 'DEFAULT_GROUP'
+2025-06-18 14:24:32.731  INFO 24788 --- [  restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-fic-user-dev.yaml'}, BootstrapPropertySource {name='bootstrapProperties-fic-user.yaml'}]
+2025-06-18 14:24:32.748  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : The following profiles are active: dev
+2025-06-18 14:24:33.237  INFO 24788 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=f75afaa0-f7e4-3ac6-9537-97d291f14e4e
+2025-06-18 14:24:33.255  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:24:33.288  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:24:33.315  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration$$EnhancerBySpringCGLIB$$2f5bdae6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:24:33.354  WARN 24788 --- [  restartedMain] org.apache.tomcat.util.modeler.Registry  : The MBean registry cannot be disabled because it has already been initialised
+2025-06-18 14:24:33.392  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9066 (http)
+2025-06-18 14:24:33.392  INFO 24788 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-18 14:24:33.392  INFO 24788 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2025-06-18 14:24:33.404  INFO 24788 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-18 14:24:33.405  INFO 24788 --- [  restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 648 ms
+2025-06-18 14:24:33.410  INFO 24788 --- [  restartedMain] c.a.c.s.SentinelWebAutoConfiguration     : [Sentinel Starter] register Sentinel CommonFilter with urlPatterns: [/*].
+2025-06-18 14:24:33.476  INFO 24788 --- [  restartedMain] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2025-06-18 14:24:33.489  INFO 24788 --- [  restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} inited
+2025-06-18 14:24:33.544  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:24:33.544  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Environment :null
+2025-06-18 14:24:33.545  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:24:33.562  INFO 24788 --- [  restartedMain] o.apache.catalina.core.StandardContext   : Suspicious URL pattern: [/**] in context [], see sections 12.1 and 12.2 of the Servlet specification
+2025-06-18 14:24:33.562  INFO 24788 --- [  restartedMain] o.s.boot.web.servlet.RegistrationBean    : Servlet dispatcherServlet was not registered (possibly already registered?)
+Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+Checking to see if class top.zway.fic.base.entity.DTO.CardDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanColumnDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.RegisterUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.LoginUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.UserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.TagDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanContentVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CardVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.InvitationVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanHomeVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.SearchVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.ColumnVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.RsaKeyVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CaptchaVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.CardDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.InvitationDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ResourceRoleDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.TagDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.GuideTemplateDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserInfoDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.RoleUserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanColumnDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ShareKanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.MailMessageBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO$UpdateTypeEnum matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.InvitationReminderBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanColumnAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.TagAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.CardAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanAO matches criteria [is assignable to Object]
+Scanned package: 'top.zway.fic.base.entity' for aliases
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/RoleUserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserInfoDao.xml]'
+2025-06-18 14:24:33.625  WARN 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2025-06-18 14:24:33.625  INFO 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2025-06-18 14:24:33.670  INFO 24788 --- [  restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2025-06-18 14:24:33.715  INFO 24788 --- [  restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService
+2025-06-18 14:24:33.780  WARN 24788 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-06-18 14:24:33.797  INFO 24788 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 20 endpoint(s) beneath base path '/actuator'
+2025-06-18 14:24:33.820  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9066 (http) with context path ''
+2025-06-18 14:24:33.820  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [BEAT] adding beat: {"cluster":"DEFAULT","ip":"10.9.29.89","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":9066,"scheduled":false,"serviceName":"DEFAULT_GROUP@@fic-user","stopped":false,"weight":1.0} to beat map.
+2025-06-18 14:24:33.821  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@fic-user with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"10.9.29.89","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":9066,"weight":1.0}
+2025-06-18 14:24:33.834  INFO 24788 --- [  restartedMain] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, fic-user 10.9.29.89:9066 register finished
+2025-06-18 14:24:33.836  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : Started UserMain9066 in 1.382 seconds (JVM running for 266.203)
+2025-06-18 14:24:33.837  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user-dev.yaml+DEFAULT_GROUP
+2025-06-18 14:24:33.837  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2025-06-18 14:24:33.837  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user.yaml+DEFAULT_GROUP
+2025-06-18 14:24:33.837  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user.yaml, group=DEFAULT_GROUP, cnt=1
+2025-06-18 14:24:33.838  INFO 24788 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-06-18 14:25:39.002  INFO 24788 --- [      Thread-29] c.a.c.n.registry.NacosServiceRegistry    : De-registering from Nacos Server now...
+2025-06-18 14:25:39.016  INFO 24788 --- [      Thread-29] com.alibaba.nacos.client.naming          : [BEAT] removing beat: DEFAULT_GROUP@@fic-user:10.9.29.89:9066 from beat map.
+2025-06-18 14:25:39.017  INFO 24788 --- [      Thread-29] com.alibaba.nacos.client.naming          : [DEREGISTER-SERVICE] public deregistering service DEFAULT_GROUP@@fic-user with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"10.9.29.89","ipDeleteTimeout":30000,"metadata":{},"port":9066,"weight":1.0}
+2025-06-18 14:25:39.037  INFO 24788 --- [      Thread-29] c.a.c.n.registry.NacosServiceRegistry    : De-registration finished.
+2025-06-18 14:25:39.046  INFO 24788 --- [      Thread-29] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2025-06-18 14:25:39.055  INFO 24788 --- [      Thread-29] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} closing ...
+2025-06-18 14:25:39.061  INFO 24788 --- [      Thread-29] com.alibaba.druid.pool.DruidDataSource   : {dataSource-2} closed
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.2.2.RELEASE)
+
+2025-06-18 14:25:39.534  INFO 24788 --- [  restartedMain] c.a.c.n.c.NacosPropertySourceBuilder     : Loading nacos data, dataId: 'fic-user-dev.yaml', group: 'DEFAULT_GROUP'
+2025-06-18 14:25:39.537  INFO 24788 --- [  restartedMain] b.c.PropertySourceBootstrapConfiguration : Located property source: [BootstrapPropertySource {name='bootstrapProperties-fic-user-dev.yaml'}, BootstrapPropertySource {name='bootstrapProperties-fic-user.yaml'}]
+2025-06-18 14:25:39.548  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : The following profiles are active: dev
+2025-06-18 14:25:39.919  INFO 24788 --- [  restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=18405fb9-da71-3042-b8ee-1fe2597e9115
+2025-06-18 14:25:39.932  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:25:39.949  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:25:39.966  INFO 24788 --- [  restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration$$EnhancerBySpringCGLIB$$2f5bdae6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2025-06-18 14:25:39.991  WARN 24788 --- [  restartedMain] org.apache.tomcat.util.modeler.Registry  : The MBean registry cannot be disabled because it has already been initialised
+2025-06-18 14:25:40.012  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9066 (http)
+2025-06-18 14:25:40.012  INFO 24788 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-06-18 14:25:40.013  INFO 24788 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.29]
+2025-06-18 14:25:40.017  INFO 24788 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-06-18 14:25:40.017  INFO 24788 --- [  restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 463 ms
+2025-06-18 14:25:40.020  INFO 24788 --- [  restartedMain] c.a.c.s.SentinelWebAutoConfiguration     : [Sentinel Starter] register Sentinel CommonFilter with urlPatterns: [/*].
+2025-06-18 14:25:40.066  INFO 24788 --- [  restartedMain] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2025-06-18 14:25:40.077  INFO 24788 --- [  restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-3} inited
+2025-06-18 14:25:40.121  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:25:40.122  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Environment :null
+2025-06-18 14:25:40.122  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : initializer namespace from System Property :null
+2025-06-18 14:25:40.135  INFO 24788 --- [  restartedMain] o.s.boot.web.servlet.RegistrationBean    : Servlet dispatcherServlet was not registered (possibly already registered?)
+Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
+Checking to see if class top.zway.fic.base.entity.DTO.CardDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanColumnDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.RegisterUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.LoginUserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.KanbanDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.UserDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DTO.TagDTO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanContentVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CardVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.InvitationVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.KanbanHomeVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.SearchVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.ColumnVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.RsaKeyVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.VO.CaptchaVO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.CardDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.InvitationDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ResourceRoleDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.TagDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.GuideTemplateDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserInfoDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.RoleUserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.KanbanColumnDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.UserDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.DO.ShareKanbanDO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.MailMessageBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO$UpdateTypeEnum matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.SearchUpdateBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.BO.InvitationReminderBO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanColumnAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.TagAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.CardAO matches criteria [is assignable to Object]
+Checking to see if class top.zway.fic.base.entity.AO.KanbanAO matches criteria [is assignable to Object]
+Scanned package: 'top.zway.fic.base.entity' for aliases
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/RoleUserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserDao.xml]'
+Parsed mapper file: 'file [/Users/WigsM/Desktop/D/WorkSpace/Hardcore_Cards/Hardcore_Cards_Backend/fic-user/src/main/resources/mapper/UserInfoDao.xml]'
+2025-06-18 14:25:40.182  WARN 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2025-06-18 14:25:40.182  INFO 24788 --- [  restartedMain] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2025-06-18 14:25:40.224  INFO 24788 --- [  restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2025-06-18 14:25:40.264  INFO 24788 --- [  restartedMain] o.s.s.c.ThreadPoolTaskScheduler          : Initializing ExecutorService
+2025-06-18 14:25:40.312  WARN 24788 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-06-18 14:25:40.330  INFO 24788 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 20 endpoint(s) beneath base path '/actuator'
+2025-06-18 14:25:40.353  INFO 24788 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9066 (http) with context path ''
+2025-06-18 14:25:40.354  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [BEAT] adding beat: {"cluster":"DEFAULT","ip":"10.9.29.89","metadata":{"preserved.register.source":"SPRING_CLOUD"},"period":5000,"port":9066,"scheduled":false,"serviceName":"DEFAULT_GROUP@@fic-user","stopped":false,"weight":1.0} to beat map.
+2025-06-18 14:25:40.354  INFO 24788 --- [  restartedMain] com.alibaba.nacos.client.naming          : [REGISTER-SERVICE] public registering service DEFAULT_GROUP@@fic-user with instance: {"clusterName":"DEFAULT","enabled":true,"ephemeral":true,"healthy":true,"instanceHeartBeatInterval":5000,"instanceHeartBeatTimeOut":15000,"ip":"10.9.29.89","ipDeleteTimeout":30000,"metadata":{"preserved.register.source":"SPRING_CLOUD"},"port":9066,"weight":1.0}
+2025-06-18 14:25:40.398  INFO 24788 --- [  restartedMain] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, fic-user 10.9.29.89:9066 register finished
+2025-06-18 14:25:40.401  INFO 24788 --- [  restartedMain] top.zway.fic.user.UserMain9066           : Started UserMain9066 in 0.977 seconds (JVM running for 332.768)
+2025-06-18 14:25:40.402  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user-dev.yaml+DEFAULT_GROUP
+2025-06-18 14:25:40.402  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2025-06-18 14:25:40.402  INFO 24788 --- [  restartedMain] c.a.n.client.config.impl.ClientWorker    : [fixed-localhost_8848] [subscribe] fic-user.yaml+DEFAULT_GROUP
+2025-06-18 14:25:40.402  INFO 24788 --- [  restartedMain] c.a.nacos.client.config.impl.CacheData   : [fixed-localhost_8848] [add-listener] ok, tenant=, dataId=fic-user.yaml, group=DEFAULT_GROUP, cnt=1
+2025-06-18 14:25:40.405  INFO 24788 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   MybatisAutoConfiguration.MapperScannerRegistrarNotFoundConfiguration matched:
+      - @ConditionalOnBean (types: org.mybatis.spring.mapper.MapperFactoryBean; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+    None
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  07:05 min
+[[1;34mINFO[m] Finished at: 2025-06-18T14:27:11+08:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.springframework.boot:spring-boot-maven-plugin:2.2.2.RELEASE:run[m [1m(default-cli)[m on project [36mfic-user[m: [1;31mApplication finished with exit code: 137[m -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

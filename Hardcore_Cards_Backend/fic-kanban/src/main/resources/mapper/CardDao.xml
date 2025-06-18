@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.zway.fic.kanban.dao.CardDao">
-    <resultMap id="BaseResultMap" type="top.zway.fic.base.entity.doo.CardDO">
+    <resultMap id="BaseResultMap" type="top.zway.fic.base.entity.DO.CardDO">
         <id column="card_id" jdbcType="BIGINT" property="cardId" />
         <result column="order_in_column" jdbcType="INTEGER" property="orderInColumn" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />

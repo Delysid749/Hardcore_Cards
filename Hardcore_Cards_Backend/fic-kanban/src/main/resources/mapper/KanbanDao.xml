@@ -5,7 +5,7 @@
         kanban_id, owner_id, title, create_time, color, type, update_time
     </sql>
 
-    <insert id="insert" parameterType="top.zway.fic.base.entity.doo.KanbanDO" useGeneratedKeys="true"
+    <insert id="insert" parameterType="top.zway.fic.base.entity.DO.KanbanDO" useGeneratedKeys="true"
             keyColumn="kanban_id" keyProperty="kanbanId">
         insert into kanban ( owner_id, title, color, type)
         values ( #{ownerId}, #{title}, #{color}, #{type})
@@ -21,7 +21,7 @@
         delete from kanban
         where kanban_id = #{kanbanId}
     </delete>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="top.zway.fic.base.entity.doo.KanbanDO">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="top.zway.fic.base.entity.DO.KanbanDO">
         select
         <include refid="Base_Column_List" />
         from kanban

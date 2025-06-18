@@ -13,4 +13,46 @@
         VALUES (#{userInfoDo.userid}, #{userInfoDo.nickname}, #{userInfoDo.avatar})
     </insert>
 
+    <!--
+        根据用户ID查询用户信息
+        获取用户的昵称、头像等扩展信息
+    -->
+    <select id="getUserInfoDo" resultType="top.zway.fic.base.entity.DO.UserInfoDO">
+        SELECT `userid`, `nickname`, `avatar`
+        FROM `user_info`
+        WHERE `userid` = #{userid}
+    </select>
+
+    <!--
+        更新用户信息
+        支持更新昵称、头像等字段
+    -->
+    <update id="updateUserInfo">
+        UPDATE `user_info`
+        SET 
+            `nickname` = #{userInfoDO.nickname},
+            `avatar` = #{userInfoDO.avatar}
+        WHERE `userid` = #{userInfoDO.userid}
+    </update>
+
+    <!--
+        更新用户昵称
+        专门用于快速更新昵称
+    -->
+    <update id="updateNickname">
+        UPDATE `user_info`
+        SET `nickname` = #{nickname}
+        WHERE `userid` = #{userid}
+    </update>
+
+    <!--
+        更新用户头像
+        专门用于快速更新头像地址
+    -->
+    <update id="updateAvatar">
+        UPDATE `user_info`
+        SET `avatar` = #{avatar}
+        WHERE `userid` = #{userid}
+    </update>
+
 </mapper>

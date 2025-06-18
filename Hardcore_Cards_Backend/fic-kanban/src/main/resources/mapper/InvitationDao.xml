@@ -21,7 +21,7 @@
         set `state` = #{state}
         where invitation_id = #{invitationId}
     </update>
-    <select id="selectByInvitedUser" resultType="top.zway.fic.base.entity.doo.InvitationDO">
+    <select id="selectByInvitedUser" resultType="top.zway.fic.base.entity.DO.InvitationDO">
         select
             <include refid="Base_Column_List"></include>
         from
@@ -31,7 +31,7 @@
           and
             invitation_time > #{date}
     </select>
-    <select id="selectByInvitationId" resultType="top.zway.fic.base.entity.doo.InvitationDO">
+    <select id="selectByInvitationId" resultType="top.zway.fic.base.entity.DO.InvitationDO">
         select
             <include refid="Base_Column_List"></include>
         from

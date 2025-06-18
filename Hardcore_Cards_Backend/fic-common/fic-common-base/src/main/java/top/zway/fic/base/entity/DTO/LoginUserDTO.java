@@ -1,4 +1,4 @@
-package top.zway.fic.user.dto;
+package top.zway.fic.base.entity.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -52,17 +52,14 @@ const Register: React.FC = () => {
         return;
       }
 
-      // 构建注册数据 - 简化版本，参考原项目
+      // 构建注册数据 - 与后端RegisterUserDTO完全匹配
       const registerData = {
         username: values.username,  // 邮箱作为用户名
-        password: values.password,
-        nickname: values.username.split('@')[0], // 使用邮箱前缀作为默认昵称
-        email: values.username,     // 邮箱
-        verificationCode: '',       // 暂时传空，后续如需要可以启用
-        rsaUuid: ''                // RSA加密UUID，后续集成RSA加密时使用
+        password: values.password   // 密码（registerReq函数会自动添加rsaUuid并加密密码）
       };
 
-      await registerReq(registerData);
+      // 调用注册接口，registerReq函数会自动处理RSA加密
+      const response = await registerReq(registerData);
       
       message.success('注册成功！请登录您的账户');
       
@@ -71,7 +68,7 @@ const Register: React.FC = () => {
       
     } catch (error: any) {
       console.error('注册失败:', error);
-      message.error(error.msg || '注册失败，请检查输入信息');
+      message.error(error.response?.data?.msg || error.msg || '注册失败，请检查输入信息');
     } finally {
       setLoading(false);
     }

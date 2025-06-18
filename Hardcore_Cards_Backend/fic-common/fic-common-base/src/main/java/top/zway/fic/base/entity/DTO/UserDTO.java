@@ -16,4 +16,9 @@ public class UserDTO implements Serializable {
     private String password;
     private Integer status;
     private List<String> roles;
+
+    // 新增字段
+    private Boolean accountNonExpired;      // 账户是否未过期
+    private Boolean accountNonLocked;       // 账户是否未锁定
+    private Boolean credentialsNonExpired;  // 凭证是否未过期
 }

@@ -1,6 +1,6 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.ao.KanbanColumnAO;
+import top.zway.fic.base.entity.AO.KanbanColumnAO;
 
 public interface ColumnService {
     /**

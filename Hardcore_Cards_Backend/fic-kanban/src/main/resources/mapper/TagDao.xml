@@ -35,7 +35,7 @@
             card_id = #{cardId}
     </select>
 
-    <select id="selectByCardId" resultType="top.zway.fic.base.entity.doo.TagDO">
+    <select id="selectByCardId" resultType="top.zway.fic.base.entity.DO.TagDO">
         select
         <include refid="Base_Column_List" />
         from tag

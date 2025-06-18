@@ -72,14 +72,32 @@ public class UserSecurityServiceImpl implements UserSecurityService {
         return true;
     }
 
-    /**
-     * 检查用户名是否存在的业务逻辑实现
-     */
     @Override
-    public boolean isUsernameExists(String username) {
-        // 查询数据库中同名用户数量
-        int count = userDao.countUsername(username);
-        // 数量大于0表示用户名已存在
-        return count > 0;
+    public boolean updatePassword(String oldpw, String newpd, Long userid) {
+        // 检查旧密码输入是否正确
+        String password = userDao.getUserDoById(userid).getPassword();
+        boolean matches = passwordEncoder.matches(oldpw, password);
+        if (!matches) {
+            return false;
+        }
+        // 更新
+        int num = userDao.updatePassword(passwordEncoder.encode(newpd), userid);
+        return num > 0;
+    }
+
+    @Override
+    public boolean updateEmail(String email, Long userid) {
+        int num = userDao.updateUsername(email, userid);
+        return num > 0;
+    }
+
+    @Override
+    public Long getUserId(String email) {
+        return userDao.getUserId(email);
+    }
+
+    @Override
+    public boolean resetPassword(String email, String password) {
+        return userDao.updatePasswordByUsername(passwordEncoder.encode(password), email) > 0;
     }
 }

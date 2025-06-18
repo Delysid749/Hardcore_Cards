@@ -1,12 +1,10 @@
 package top.zway.fic.user.controller;
 
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import top.zway.fic.base.entity.doo.UserInfoDO;
+import top.zway.fic.base.entity.DO.UserInfoDO;
 import top.zway.fic.base.result.R;
 import top.zway.fic.user.service.UserInfoService;
 import top.zway.fic.user.service.UserSecurityService;
@@ -14,7 +12,6 @@ import top.zway.fic.user.service.UserSecurityService;
 import java.util.HashMap;
 
 @RestController
-@Api("rpc用户信息api")
 @RequiredArgsConstructor
 public class UserInfoRpcController {
     private final UserInfoService userInfoService;

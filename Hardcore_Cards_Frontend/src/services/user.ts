@@ -26,11 +26,26 @@ function encryptPassword(password: string, rsaKey: string): string {
 }
 
 /**
- * 获取用户信息 - 与原项目 user.js 保持一致
+ * 获取当前用户信息 - 与后端/api/user/info接口对应
+ * 
+ * 原理说明：
+ * 1. 通过JWT Token获取当前登录用户的详细信息
+ * 2. 包含用户基本信息：用户名、邮箱、昵称、头像等
+ * 3. 用于登录成功后的用户信息展示和状态管理
  */
 export function userInfoReq() {
   return request({
     url: "/api/user/info",
+    method: "get"
+  });
+}
+
+/**
+ * 获取用户详细信息 - 扩展接口，获取更多用户信息
+ */
+export function getUserDetail() {
+  return request({
+    url: "/api/user/detail",
     method: "get"
   });
 }
@@ -99,7 +114,15 @@ export function updateEmail(data: any) {
 }
 
 /**
- * 更新用户信息 - 通用接口
+ * 更新用户信息 - 通用接口，支持更新多个字段
+ * 
+ * 参数说明：
+ * {
+ *   nickname?: string,  // 昵称
+ *   email?: string,     // 邮箱
+ *   phone?: string,     // 手机号
+ *   avatar?: string     // 头像URL
+ * }
  */
 export function updateUserReq(data: any) {
   return request({
@@ -111,6 +134,9 @@ export function updateUserReq(data: any) {
 
 /**
  * 上传头像 - 与原项目保持一致
+ * 
+ * 参数说明：
+ * FormData对象，包含avatar文件
  */
 export function uploadAvatarReq(data: any) {
   return request({
@@ -118,5 +144,19 @@ export function uploadAvatarReq(data: any) {
     method: "post",
     data,
     headers: { 'content-type': 'multipart/form-data' }
+  });
+}
+
+/**
+ * 验证用户Token有效性
+ * 
+ * 原理说明：
+ * 1. 用于检查当前Token是否仍然有效
+ * 2. 通常在页面加载时调用，确保用户登录状态
+ */
+export function validateToken() {
+  return request({
+    url: "/api/user/validate-token",
+    method: "get"
   });
 } 

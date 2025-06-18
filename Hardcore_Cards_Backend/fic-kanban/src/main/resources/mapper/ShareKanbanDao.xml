@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.zway.fic.kanban.dao.ShareKanbanDao">
-    <resultMap id="BaseResultMap" type="top.zway.fic.base.entity.doo.ShareKanbanDO">
+    <resultMap id="BaseResultMap" type="top.zway.fic.base.entity.DO.ShareKanbanDO">
         <id column="kanban_id" jdbcType="BIGINT" property="kanbanId" />
         <id column="userid" jdbcType="BIGINT" property="userid" />
         <result column="is_collect" jdbcType="TINYINT" property="collected" />

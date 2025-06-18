@@ -1,7 +1,7 @@
 package top.zway.fic.kanban.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.zway.fic.base.entity.doo.GuideTemplateDO;
+import top.zway.fic.base.entity.DO.GuideTemplateDO;
 
 import java.util.List;
 

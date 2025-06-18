@@ -1,7 +1,5 @@
 package top.zway.fic.auth.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +31,6 @@ import top.zway.fic.base.result.R;
  */
 @RestController
 @RequiredArgsConstructor
-@Api("非对称加密")
 @Slf4j
 public class AsymmetricEncryptionController {
 
@@ -65,7 +62,6 @@ public class AsymmetricEncryptionController {
      *
      * @return 包含RSA公钥和UUID的响应对象
      */
-    @ApiOperation("生成rsa密钥对，并返回公钥和uuid")
     @GetMapping("/oauth/rsa")
     public R<RsaKeyVO> generateKeyPair() {
         return R.success(asymmetricEncryptionService.generateKeyPair());
@@ -99,7 +95,6 @@ public class AsymmetricEncryptionController {
      * @param needDelete 解密后是否删除私钥
      * @return 解密后的明文字符串，解密失败返回null
      */
-    @ApiOperation("rpc，用uuid解密内容")
     @PostMapping("/rpc/rsa/decrypt")
     public String decrypt(@RequestParam("uuid") String uuid,
                           @RequestParam("content") String content,

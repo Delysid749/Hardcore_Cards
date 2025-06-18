@@ -1,6 +1,6 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.vo.ColumnVO;
+import top.zway.fic.base.entity.VO.ColumnVO;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package top.zway.fic.search.service;
 
-import top.zway.fic.base.entity.vo.SearchVO;
+import top.zway.fic.base.entity.VO.SearchVO;
 
 import java.util.List;
 

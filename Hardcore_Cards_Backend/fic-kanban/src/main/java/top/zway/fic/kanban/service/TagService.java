@@ -1,6 +1,6 @@
 package top.zway.fic.kanban.service;
 
-import top.zway.fic.base.entity.ao.TagAO;
+import top.zway.fic.base.entity.AO.TagAO;
 
 public interface TagService {
     /**

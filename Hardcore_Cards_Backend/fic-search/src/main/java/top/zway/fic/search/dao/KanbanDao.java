@@ -2,7 +2,7 @@ package top.zway.fic.search.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import top.zway.fic.base.entity.doo.KanbanDO;
+import top.zway.fic.base.entity.DO.KanbanDO;
 
 @Mapper
 public interface KanbanDao {
