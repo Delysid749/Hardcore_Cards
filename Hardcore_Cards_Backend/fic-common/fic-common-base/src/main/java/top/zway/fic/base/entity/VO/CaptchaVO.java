@@ -1,4 +1,4 @@
-package top.zway.fic.base.entity.vo;
+package top.zway.fic.base.entity.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

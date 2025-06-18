@@ -1,119 +1,72 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, message, Divider } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { registerReq, sendEmailCodeReq, validateUsernameReq, validateEmailReq } from '../services';
+import { registerReq } from '../services';
 
 const { Title, Text } = Typography;
 
 /**
  * 注册页面组件
  * 
- * 原理说明：
- * 1. 完全按照原Vue项目的注册逻辑和接口调用方式
- * 2. 包含邮箱验证码验证功能
- * 3. 用户名和邮箱唯一性验证
- * 4. 密码确认验证
+ * 参考原项目：RegisterComponent.vue
+ * 简化版本，只包含核心字段：
+ * 1. 邮箱（作为用户名）
+ * 2. 密码
+ * 3. 确认密码
  * 
- * 对应原项目：
- * - RegisterComponent.vue
+ * 注册逻辑：
+ * 1. 前端验证邮箱格式和密码一致性
+ * 2. 调用后端注册接口
+ * 3. 注册成功后跳转登录页面
  */
 
 interface RegisterForm {
-  username: string;
+  username: string;  // 邮箱作为用户名
   password: string;
   confirmPassword: string;
-  email: string;
-  emailCode: string;
-  nickname: string;
 }
 
 const Register: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [sendingCode, setSendingCode] = useState(false);
-  const [countdown, setCountdown] = useState(0);
   const navigate = useNavigate();
 
   /**
-   * 发送邮箱验证码 - 与原项目保持一致
-   */
-  const handleSendEmailCode = async () => {
-    try {
-      const email = form.getFieldValue('email');
-      if (!email) {
-        message.error('请先输入邮箱地址');
-        return;
-      }
-
-      // 验证邮箱格式
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        message.error('请输入有效的邮箱地址');
-        return;
-      }
-
-      setSendingCode(true);
-
-      // 先验证邮箱是否已存在
-      await validateEmailReq({ email });
-
-      // 发送验证码
-      await sendEmailCodeReq({ email });
-      
-      message.success('验证码已发送到您的邮箱');
-      
-      // 开始倒计时
-      setCountdown(60);
-      const timer = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-    } catch (error: any) {
-      message.error(error.msg || '发送验证码失败');
-    } finally {
-      setSendingCode(false);
-    }
-  };
-
-  /**
-   * 验证用户名唯一性
-   */
-  const validateUsername = async (username: string) => {
-    if (!username) return;
-    try {
-      await validateUsernameReq({ username });
-    } catch (error: any) {
-      throw new Error(error.msg || '用户名已存在');
-    }
-  };
-
-  /**
-   * 处理注册提交 - 与原项目RegisterComponent.vue保持一致
+   * 处理注册提交 - 参考原项目RegisterComponent.vue的register方法
    */
   const handleRegister = async (values: RegisterForm) => {
     setLoading(true);
     try {
-      // 构建注册数据 - 与原项目保持一致
+      // 邮箱格式验证 - 与原项目保持一致
+      const emailRegex = /^([a-zA-Z0-9]+[_|_|\-|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,6}$/;
+      
+      if (!emailRegex.test(values.username)) {
+        message.error('邮箱格式错误');
+        return;
+      }
+
+      // 密码长度验证 - 与原项目保持一致
+      if (values.password.length < 6 || values.password.length > 50) {
+        message.error('密码长度应在6-50字符之间');
+        return;
+      }
+
+      // 构建注册数据 - 简化版本，参考原项目
       const registerData = {
-        username: values.username,
+        username: values.username,  // 邮箱作为用户名
         password: values.password,
-        email: values.email,
-        nickname: values.nickname,
-        emailCode: values.emailCode
+        nickname: values.username.split('@')[0], // 使用邮箱前缀作为默认昵称
+        email: values.username,     // 邮箱
+        verificationCode: '',       // 暂时传空，后续如需要可以启用
+        rsaUuid: ''                // RSA加密UUID，后续集成RSA加密时使用
       };
 
       await registerReq(registerData);
       
       message.success('注册成功！请登录您的账户');
       
-      // 跳转到登录页
+      // 跳转到登录页 - 与原项目保持一致
       navigate('/login');
       
     } catch (error: any) {
@@ -175,41 +128,12 @@ const Register: React.FC = () => {
           autoComplete="off"
           layout="vertical"
         >
+          {/* 邮箱字段 - 作为用户名 */}
           <Form.Item
             name="username"
-            label="用户名"
+            label="邮箱"
             rules={[
-              { required: true, message: '请输入用户名！' },
-              { min: 3, max: 20, message: '用户名长度为3-20个字符！' },
-              { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名只能包含字母、数字和下划线！' },
-              { validator: (_, value) => validateUsername(value) }
-            ]}
-          >
-            <Input 
-              prefix={<UserOutlined />} 
-              placeholder="请输入用户名"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="nickname"
-            label="昵称"
-            rules={[
-              { required: true, message: '请输入昵称！' },
-              { min: 2, max: 10, message: '昵称长度为2-10个字符！' }
-            ]}
-          >
-            <Input 
-              prefix={<UserOutlined />} 
-              placeholder="请输入昵称"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="email"
-            label="邮箱地址"
-            rules={[
-              { required: true, message: '请输入邮箱地址！' },
+              { required: true, message: '请输入邮箱！' },
               { type: 'email', message: '请输入有效的邮箱地址！' }
             ]}
           >
@@ -219,36 +143,13 @@ const Register: React.FC = () => {
             />
           </Form.Item>
 
-          <Form.Item
-            name="emailCode"
-            label="邮箱验证码"
-            rules={[
-              { required: true, message: '请输入邮箱验证码！' },
-              { len: 6, message: '验证码为6位数字！' }
-            ]}
-          >
-            <Input
-              placeholder="请输入验证码"
-              suffix={
-                <Button 
-                  type="link" 
-                  onClick={handleSendEmailCode}
-                  disabled={countdown > 0 || sendingCode}
-                  loading={sendingCode}
-                  style={{ padding: 0 }}
-                >
-                  {countdown > 0 ? `${countdown}s后重发` : '发送验证码'}
-                </Button>
-              }
-            />
-          </Form.Item>
-
+          {/* 密码字段 */}
           <Form.Item
             name="password"
             label="密码"
             rules={[
               { required: true, message: '请输入密码！' },
-              { min: 6, max: 20, message: '密码长度为6-20个字符！' }
+              { min: 6, max: 50, message: '密码长度为6-50个字符！' }
             ]}
           >
             <Input.Password 
@@ -257,6 +158,7 @@ const Register: React.FC = () => {
             />
           </Form.Item>
 
+          {/* 确认密码字段 */}
           <Form.Item
             name="confirmPassword"
             label="确认密码"

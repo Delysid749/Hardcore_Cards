@@ -16,7 +16,7 @@ export interface ApiResponse<T = any> {
  * 创建axios实例 - 与原Vue项目配置保持一致
  */
 const instance = axios.create({
-  baseURL: '',
+  baseURL: 'http://localhost:9201',
   timeout: 15000
 });
 

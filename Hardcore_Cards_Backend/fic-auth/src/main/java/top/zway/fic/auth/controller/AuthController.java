@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -119,7 +120,22 @@ public class AuthController {
         return R.success(accessToken);
     }
 
-
-
+    /**
+     * 热部署测试接口
+     * 
+     * 用途：验证Spring Boot DevTools热部署功能是否正常工作
+     * 使用方法：
+     * 1. 启动认证服务
+     * 2. 访问: GET http://localhost:4011/oauth/hotdeploy-test
+     * 3. 修改返回消息，按Ctrl+F9编译
+     * 4. 再次访问，查看消息是否更新
+     * 
+     * @return 测试消息
+     */
+    @GetMapping("/oauth/hotdeploy-test")
+    public R<String> hotDeployTest() {
+        log.info("热部署测试接口被调用");
+        return R.success("🚀 热部署测试成功！当前时间: " + java.time.LocalDateTime.now() + " - 版本1.0");
+    }
 
 }
